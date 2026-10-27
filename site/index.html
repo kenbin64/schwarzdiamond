@@ -92,6 +92,19 @@
   footer { padding-block: 40px 56px; font-size: 14px; color: var(--soft); display: grid; gap: 10px; }
   footer p { max-width: 80ch; }
 
+  /* The sidebar: the page's sections down the left, below the hero; the one in view is marked. Hidden on phones. */
+  main.site { display: grid; grid-template-columns: 200px minmax(0, 1fr); column-gap: 48px; max-width: 1240px; margin: 0 auto; padding-left: max(20px, env(safe-area-inset-left, 0px)); padding-right: max(20px, env(safe-area-inset-right, 0px)); }
+  .sections { min-width: 0; }
+  .sections .wrap { max-width: none; padding-left: 0; padding-right: 0; }
+  .side { position: sticky; top: 0; align-self: start; display: grid; gap: 2px; padding-block: clamp(56px, 8vw, 104px) 24px; }
+  .side-label { font: 500 12px var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--brass); margin-bottom: 10px; }
+  .side a { font: 500 15px var(--body); color: var(--soft); text-decoration: none; padding: 7px 12px; border-left: 2px solid var(--line); }
+  .side a:hover { color: var(--ink); border-left-color: var(--soft); }
+  .side a[aria-current="true"] { color: var(--teal); border-left-color: var(--teal); font-weight: 600; }
+  .side a:focus-visible { outline: 2px solid var(--teal); outline-offset: 2px; }
+  html { scroll-behavior: smooth; }
+  section.band { scroll-margin-top: 16px; }
+  @media (max-width: 860px) { main.site { grid-template-columns: 1fr; } .side { display: none; } }
   @media (max-width: 860px) {
     .problems { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .hero .wrap { grid-template-columns: 1fr; min-height: 0; padding-block: 24px 48px; }
@@ -126,7 +139,17 @@
   </div>
 </header>
 
-<main>
+<main class="site">
+  <aside class="side" aria-label="On this page">
+    <p class="side-label">On this page</p>
+    <a href="#purpose">What it is for</a>
+    <a href="#shape">The shape</a>
+    <a href="#results">Results</a>
+    <a href="#covers">What it covers</a>
+    <a href="#without-ai">Without AI</a>
+    <a href="#limits">Limits</a>
+  </aside>
+  <div class="sections">
   <section class="band" id="purpose">
     <div class="wrap">
       <div class="head"><p class="label">What it is for</p><h2>The problems it solves</h2>
@@ -177,7 +200,7 @@
     </div>
   </section>
 
-  <section class="band">
+  <section class="band" id="covers">
     <div class="wrap two">
       <div class="head" style="margin:0"><p class="label">What it covers</p><h2>One engine, many kinds of file</h2>
         <p>Every module runs through the same base engine: every part becomes a point that knows only its neighbours, and every reading is the same act repeated until the answer settles.</p></div>
@@ -190,7 +213,7 @@
     </div>
   </section>
 
-  <section class="band">
+  <section class="band" id="without-ai">
     <div class="wrap">
       <div class="head"><p class="label">Without AI</p><h2>Measure, do not predict</h2></div>
       <div class="contrast">
@@ -212,6 +235,7 @@
       </ul>
     </div>
   </section>
+  </div>
 </main>
 
 <footer class="wrap">
@@ -282,6 +306,16 @@
     if (visible && !still) requestAnimationFrame(frame);
   }
   requestAnimationFrame(frame);
+})();
+</script>
+<script>
+// The sidebar marks the section being read: the one whose top has most recently passed the upper third of the screen.
+(function () {
+  const links = [...document.querySelectorAll('.side a')], byId = new Map(links.map(a => [a.getAttribute('href').slice(1), a]));
+  const mark = id => links.forEach(a => a.setAttribute('aria-current', String(a === byId.get(id))));
+  const sections = [...byId.keys()].map(id => document.getElementById(id)).filter(Boolean);
+  const pick = () => { let cur = sections[0]; for (const s of sections) if (s.getBoundingClientRect().top < innerHeight / 3) cur = s; mark(cur.id); };
+  addEventListener('scroll', pick, { passive: true }); addEventListener('resize', pick); pick();
 })();
 </script>
 </body>
