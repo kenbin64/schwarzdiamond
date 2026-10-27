@@ -1,0 +1,4 @@
+# Original art files stay local; the site uses the crops in site/assets.
+source-art/
+node_modules/
+.wrangler/

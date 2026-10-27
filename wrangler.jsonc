@@ -1,0 +1,10 @@
+{
+  // Publishes the site folder of schwarzdiamond.com to Cloudflare as plain files (no server code).
+  // Deploy:  npx wrangler deploy --config C:\projects\schwarzdiamond\wrangler.jsonc
+  "name": "schwarzdiamond",
+  "compatibility_date": "2026-10-01",
+  "assets": { "directory": "./site" },
+  "routes": [ { "pattern": "schwarzdiamond.com", "custom_domain": true }, { "pattern": "www.schwarzdiamond.com", "custom_domain": true } ],
+  // The workers.dev address stays on as a fallback while the domain settles.
+  "workers_dev": true
+}

@@ -1,0 +1,288 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Schwarz Diamond</title>
+<meta name="description" content="The Schwarz Diamond Hardener makes code, models, pictures, sound and text leaner, safer and more trustworthy, by measurement and geometry rather than AI. Every change is proven and reversible.">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/icon32.png">
+<link rel="apple-touch-icon" href="assets/icon180.png">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  /* Palette: the two interlaced networks of the surface, a deep teal and a worn brass, on ink and paper. */
+  :root {
+    --paper: #f3f1ec; --panel: #fbfaf7; --ink: #15191b; --soft: #5b6266; --line: #d9d5cc;
+    --teal: #2f6f6b; --brass: #9a7433; --deep: #0d1214; --deep-ink: #e8ecea; --deep-soft: #9aa6a5;
+    --display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+    --body: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+    --mono: "IBM Plex Mono", ui-monospace, Consolas, monospace;
+  }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+    --paper: #111517; --panel: #161b1d; --ink: #e6eae8; --soft: #9aa4a6; --line: #273034;
+    --teal: #6fb5ae; --brass: #d3aa62; color-scheme: dark } }
+  :root[data-theme="dark"] { --paper: #111517; --panel: #161b1d; --ink: #e6eae8; --soft: #9aa4a6; --line: #273034; --teal: #6fb5ae; --brass: #d3aa62; color-scheme: dark }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--paper); color: var(--ink); font: 17px/1.6 var(--body); }
+  .wrap { max-width: 1120px; margin: 0 auto; padding-left: max(20px, env(safe-area-inset-left, 0px)); padding-right: max(20px, env(safe-area-inset-right, 0px)); }
+  h1, h2, h3 { font-family: var(--display); text-wrap: balance; margin: 0; }
+  h2 { font-weight: 700; font-size: clamp(28px, 3.6vw, 40px); line-height: 1.1; letter-spacing: -0.01em; }
+  h3 { font-weight: 600; font-size: 19px; line-height: 1.3; }
+  p { margin: 0; max-width: 64ch; }
+  .label { font: 500 12px var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--brass); }
+
+  /* The hero is always dark: the surface needs a deep ground. */
+  .hero { background: var(--deep); color: var(--deep-ink); overflow: hidden; }
+  .hero .wrap { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); gap: 24px; align-items: center; min-height: min(86vh, 760px); padding-block: 56px; }
+  .hero h1 { font-weight: 800; font-size: clamp(44px, 7vw, 86px); line-height: .95; letter-spacing: -0.02em; }
+  .hero .lede { font-size: clamp(18px, 1.6vw, 21px); color: var(--deep-ink); margin-top: 22px; max-width: 34ch; }
+  .hero .sub { color: var(--deep-soft); margin-top: 14px; max-width: 46ch; font-size: 16px; }
+  .hero .label { color: #c9a35c; }
+  .stage { position: relative; aspect-ratio: 1; width: 100%; max-width: 620px; justify-self: end; }
+  #surface { width: 100%; height: 100%; display: block; }
+  .stage figcaption { position: absolute; left: 0; bottom: -4px; font: 12px var(--mono); color: var(--deep-soft); }
+  .stage figcaption i { display: inline-block; width: 9px; height: 9px; border-radius: 2px; margin: 0 6px 0 12px; vertical-align: 0; }
+  .stage figcaption i:first-child { margin-left: 0; }
+  nav.top { display: flex; justify-content: space-between; align-items: center; padding-block: 18px; font: 500 13px var(--mono); color: var(--deep-soft); }
+  nav.top b { color: var(--deep-ink); font: 700 15px var(--display); letter-spacing: .01em; }
+  nav.top .links { display: flex; gap: 18px; flex-wrap: wrap; }
+  nav.top a { color: inherit; text-decoration: none; } nav.top a:hover { color: var(--deep-ink); }
+
+  section.band { padding-block: clamp(56px, 8vw, 104px); border-bottom: 1px solid var(--line); }
+  .head { display: grid; gap: 12px; margin-bottom: 36px; }
+  .head p { color: var(--soft); }
+  .two { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 48px; }
+  .problems { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1px; background: var(--line); border: 1px solid var(--line); }
+  .problems div { background: var(--panel); padding: 22px; display: grid; gap: 8px; align-content: start; }
+  .problems p { font-size: 15px; color: var(--soft); }
+
+  /* The shape: each property beside the question it puts to anything. */
+  .props { display: grid; gap: 0; border-top: 1px solid var(--line); }
+  .prop { display: grid; grid-template-columns: 44px minmax(0, 1fr) minmax(0, 1fr); gap: 20px; padding: 20px 0; border-bottom: 1px solid var(--line); align-items: baseline; }
+  .prop .n { font: 500 14px var(--mono); color: var(--brass); }
+  .prop p { font-size: 16px; color: var(--soft); }
+  .prop q { quotes: none; font-family: var(--display); font-weight: 600; font-size: 18px; color: var(--teal); }
+
+  /* Results: a ledger of what was measured, on real files. */
+  .ledger { width: 100%; border-collapse: collapse; font-size: 15px; }
+  .ledger th { text-align: left; font: 500 12px var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--soft); padding: 0 16px 10px 0; border-bottom: 1px solid var(--ink); }
+  .ledger td { padding: 16px 16px 16px 0; border-bottom: 1px solid var(--line); vertical-align: top; }
+  .ledger td:first-child { font-family: var(--display); font-weight: 600; white-space: nowrap; }
+  .ledger .num { font: 500 15px var(--mono); color: var(--teal); white-space: nowrap; }
+  .ledger .check { color: var(--soft); font-size: 14px; }
+  .scroll { overflow-x: auto; }
+  .note { font-size: 14px; color: var(--soft); margin-top: 16px; }
+
+  .modules { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 28px 36px; }
+  .modules h3 { font-size: 13px; font-family: var(--mono); font-weight: 500; letter-spacing: .12em; text-transform: uppercase; color: var(--brass); margin-bottom: 10px; }
+  .modules ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+  .modules li { font-size: 15px; color: var(--soft); }
+  .modules li b { color: var(--ink); font-weight: 600; display: block; font-size: 16px; }
+
+  .contrast { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); border: 1px solid var(--line); }
+  .contrast > div { padding: 24px; display: grid; gap: 12px; align-content: start; }
+  .contrast > div + div { border-left: 1px solid var(--line); background: var(--panel); }
+  .contrast ul { margin: 0; padding-left: 18px; display: grid; gap: 8px; font-size: 15px; }
+  .contrast h3 { font-size: 17px; }
+  .limits { margin: 0; padding-left: 18px; display: grid; gap: 10px; color: var(--soft); font-size: 16px; max-width: 70ch; }
+  .limits b { color: var(--ink); font-weight: 600; }
+
+  nav.top .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+  nav.top .brand img { border-radius: 7px; display: block; }
+  footer .lockup { width: min(320px, 100%); height: auto; border-radius: 12px; display: block; margin-bottom: 8px; }
+  footer { padding-block: 40px 56px; font-size: 14px; color: var(--soft); display: grid; gap: 10px; }
+  footer p { max-width: 80ch; }
+
+  @media (max-width: 860px) {
+    .problems { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .hero .wrap { grid-template-columns: 1fr; min-height: 0; padding-block: 24px 48px; }
+    .stage { justify-self: center; max-width: 440px; }
+    .two, .contrast { grid-template-columns: 1fr; gap: 28px; }
+    .contrast > div + div { border-left: 0; border-top: 1px solid var(--line); }
+    .prop { grid-template-columns: 32px minmax(0, 1fr); }
+    .prop q { grid-column: 2; }
+  }
+  @media (max-width: 560px) { .problems { grid-template-columns: 1fr; } nav.top .links { display: none; } }
+  @media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto; } }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap" style="display:block;min-height:0;padding-block:0">
+    <nav class="top" aria-label="Sections"><a class="brand" href="#"><img src="assets/mark96.png" width="30" height="30" alt=""><b>Schwarz Diamond</b></a>
+      <span class="links"><a href="#purpose">Purpose</a><a href="#shape">The shape</a><a href="#results">Results</a><a href="#limits">Limits</a></span></nav>
+  </div>
+  <div class="wrap">
+    <div>
+      <p class="label">The Schwarz Diamond Hardener</p>
+      <h1>Geometry, not guesswork.</h1>
+      <p class="lede">It makes what you already have leaner, safer and more trustworthy, and proves every change it makes.</p>
+      <p class="sub">Code, 3D models, pictures, sound, articles and statements. No AI writes or changes anything. It measures, it checks, and every change can be undone.</p>
+    </div>
+    <figure class="stage" style="margin:0">
+      <canvas id="surface" aria-label="A block cut from the Schwarz Diamond surface, turning slowly. Its two sides, shown in teal and brass, are the two interlaced networks the surface keeps apart."></canvas>
+      <figcaption><i style="background:#4f9c96"></i>one network <i style="background:#c9a35c"></i>the other, interlaced, never touching</figcaption>
+    </figure>
+  </div>
+</header>
+
+<main>
+  <section class="band" id="purpose">
+    <div class="wrap">
+      <div class="head"><p class="label">What it is for</p><h2>The problems it solves</h2>
+        <p>Most of what slows software down, leaks private details or misleads a reader is not missing. It is extra, hidden or lopsided. The hardener finds it, fixes only what it can prove is safe, and hands the rest to a person.</p></div>
+      <div class="problems">
+        <div><h3>Weight that does nothing</h3><p>Code that nothing uses, model detail that never reaches the screen, filler words. Removed only when a check proves nothing visible or working changed.</p></div>
+        <div><h3>Exposure you cannot see</h3><p>Where a photo was taken, which software made a file, keys left in source code, dependencies with known flaws.</p></div>
+        <div><h3>Fragile points</h3><p>The one part everything rests on, and changes with no way back. Pointed out for a decision, never changed behind your back.</p></div>
+        <div><h3>Slanted coverage</h3><p>Articles about the same event that split into sides, and what every side still agrees on.</p></div>
+        <div><h3>Answers you can check</h3><p>Questions answered from your own documents, in their own words, with the file and line. When they do not say, it says so.</p></div>
+        <div><h3>Trust</h3><p>The same input gives the same answer every time. It runs on your own computer, and nothing is sent anywhere.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band" id="shape">
+    <div class="wrap">
+      <div class="head"><p class="label">The shape</p><h2>Why a minimal surface</h2>
+        <p>The Schwarz Diamond is a surface found in nature and in engineering: it divides space into two interlaced channels with the least material for the most surface. Its properties are the questions the hardener puts to anything you give it. The shape decides what to look for; plain measurements and checks give the answers.</p></div>
+      <div class="props">
+        <div class="prop"><span class="n">01</span><p><b>Least material, most surface.</b> Nothing is there that does not do work.</p><q>What carries nothing?</q></div>
+        <div class="prop"><span class="n">02</span><p><b>Every point is held up by the lines beneath it.</b> Nothing floats.</p><q>What holds up what, and what is floating?</q></div>
+        <div class="prop"><span class="n">03</span><p><b>Load gathers along certain lines.</b> Some parts carry far more than others.</p><q>Where would one failure bring the rest down?</q></div>
+        <div class="prop"><span class="n">04</span><p><b>Two networks, woven together, that never touch.</b></p><q>Which sides keep to themselves, and what crosses between them?</q></div>
+        <div class="prop"><span class="n">05</span><p><b>Every turn of 90 degrees opens a new direction.</b> Waste, security, reliability and resilience are measured apart.</p><q>Does a saving here cost something there?</q></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band" id="results">
+    <div class="wrap">
+      <div class="head"><p class="label">Measured</p><h2>Results on real files</h2>
+        <p>Every figure below was measured on real projects and files, and every change was checked before it counted.</p></div>
+      <div class="scroll">
+        <table class="ledger">
+          <thead><tr><th>Area</th><th>Measured</th><th>How it was checked</th></tr></thead>
+          <tbody>
+            <tr><td>3D models</td><td><span class="num">2.0 MB proven removable</span><br>across 98 of a finished browser game's 147 models, which were already compressed</td><td class="check">Each model drawn before and after from 6 angles at two sizes: at most 0.31% of pixels moved, 47 dB or better. Animations played in both.</td></tr>
+            <tr><td>Source code</td><td><span class="num">3 projects tested</span><br>unused imports and code nothing calls, removed from copies of each</td><td class="check">Each project's own test suite, before and after: 31, 28 and 10 tests passing, unchanged. No new errors when the pages load.</td></tr>
+            <tr><td>Pictures</td><td><span class="num">Hidden details removed</span><br>location, camera, software and editing history</td><td class="check">Both versions decoded by Chrome and compared: every pixel identical.</td></tr>
+            <tr><td>Sound</td><td><span class="num">Tags and padding removed</span><br>loop points and cue markers kept</td><td class="check">Both versions decoded: every sample in every channel identical.</td></tr>
+            <tr><td>News coverage</td><td><span class="num">4 articles, 0 factions</span><br>on one college football game; shared facts found in all of them</td><td class="check">Loaded language 0.3 to 0.7 words per 100, against 4 to 7 in deliberately slanted test articles.</td></tr>
+            <tr><td>Your documents</td><td><span class="num">Abstains when unsupported</span><br>asked whether the conference fined the school, it answered "your documents do not say"</td><td class="check">Answers are copied sentences with file and line; a key word absent from every document blocks an answer.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="note">Honest scale: on the game's models the free saving was about 3%, because an earlier compression pass had already done the heavy work. The hardener reports what is there, including when there is little to gain.</p>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="wrap two">
+      <div class="head" style="margin:0"><p class="label">What it covers</p><h2>One engine, many kinds of file</h2>
+        <p>Every module runs through the same base engine: every part becomes a point that knows only its neighbours, and every reading is the same act repeated until the answer settles.</p></div>
+      <div class="modules">
+        <div><h3>Code</h3><ul><li><b>Source code</b>unused imports and code nothing calls</li><li><b>Code that never runs</b>what a real session never touches</li><li><b>Security</b>known flaws, exposed keys, outside scripts</li></ul></div>
+        <div><h3>Media</h3><ul><li><b>3D models</b>detail that never reaches the screen</li><li><b>Pictures</b>hidden details, identical pixels</li><li><b>Sound</b>tags and padding, identical samples</li></ul></div>
+        <div><h3>Words</h3><ul><li><b>Text</b>fixes by rule; summaries in the original words</li><li><b>Bias</b>sides, and what they agree on</li><li><b>Ask your documents</b>answers with file and line</li></ul></div>
+        <div><h3>Money</h3><ul><li><b>Budget</b>repeat charges and fees, from a statement</li></ul></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="wrap">
+      <div class="head"><p class="label">Without AI</p><h2>Measure, do not predict</h2></div>
+      <div class="contrast">
+        <div><h3>A language model</h3><ul><li>predicts the likeliest words</li><li>can be confidently wrong</li><li>can answer differently each time</li><li>usually sends your files to a server</li></ul></div>
+        <div><h3>The hardener</h3><ul><li>counts, compares and checks</li><li>makes a change only when a check proves it safe; otherwise it holds back and says why</li><li>gives the same answer every time</li><li>runs on your computer; nothing leaves it</li></ul></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band" id="limits">
+    <div class="wrap">
+      <div class="head"><p class="label">Limits</p><h2>What it does not do</h2></div>
+      <ul class="limits">
+        <li><b>It does not write.</b> It cannot compose new sentences or new code; it removes, rearranges and quotes.</li>
+        <li><b>It matches what is written.</b> Two articles saying the same thing in different words can be missed, and so can an answer phrased differently from the question.</li>
+        <li><b>It measures agreement, not truth.</b> A consensus is what the sources share; they can all be wrong together.</li>
+        <li><b>Its style score is not proof.</b> It can say text reads like AI; it cannot say who wrote it, and should never be used to accuse anyone.</li>
+        <li><b>It leaves judgment to people.</b> Anything it cannot prove safe is reported, not changed.</li>
+      </ul>
+    </div>
+  </section>
+</main>
+
+<footer class="wrap">
+  <img class="lockup" src="assets/logo.jpg" width="684" height="430" alt="Schwarz Diamond logo: a faceted diamond above the name SCHWARZDIAMOND">
+  <p>The Schwarz Diamond Hardener is in private development. It is a portfolio project, not a product for sale.</p>
+  <p>Concept and direction: Kenneth W. Bingham. Built with the help of Claude AI under a standing directive to be skeptical, to insist on proof, and to allow no claim that is not demonstrated in tested code. The ideas are the author's; the AI implemented and verified them, it did not originate them.</p>
+</footer>
+
+<script>
+// The surface, drawn from its equation: sin x sin y sin z + sin x cos y cos z + cos x sin y cos z + cos x cos y sin z = 0.
+// A thin sheet along it is cut to a block and ray-marched on the GPU; each side of the sheet faces one of the two
+// networks, and is coloured as that network. If the browser has no WebGL, the picture is simply left out.
+(function () {
+  const canvas = document.getElementById('surface');
+  const gl = canvas.getContext('webgl', { antialias: false, premultipliedAlpha: false });
+  if (!gl) { canvas.closest('figure').hidden = true; return; }
+  const vs = 'attribute vec2 p; void main(){ gl_Position = vec4(p, 0.0, 1.0); }';
+  const fs = `precision highp float;
+    uniform vec2 res; uniform float t;
+    const float B = 4.712;                       // half the block: one and a half cells of the surface
+    float f(vec3 p){ vec3 s = sin(p), c = cos(p); return s.x*s.y*s.z + s.x*c.y*c.z + c.x*s.y*c.z + c.x*c.y*s.z; }
+    float box(vec3 p){ vec3 q = abs(p) - vec3(B); return length(max(q, 0.0)) + min(max(q.x, max(q.y, q.z)), 0.0); }
+    mat3 turn(float a, float b){ float ca = cos(a), sa = sin(a), cb = cos(b), sb = sin(b);
+      return mat3(ca, 0.0, -sa, 0.0, 1.0, 0.0, sa, 0.0, ca) * mat3(1.0, 0.0, 0.0, 0.0, cb, sb, 0.0, -sb, cb); }
+    float map(vec3 p){ return max((abs(f(p)) - 0.22) / 2.2, box(p)); }
+    vec3 normal(vec3 p){ vec2 e = vec2(0.002, 0.0);
+      return normalize(vec3(map(p+e.xyy)-map(p-e.xyy), map(p+e.yxy)-map(p-e.yxy), map(p+e.yyx)-map(p-e.yyx))); }
+    void main(){
+      vec2 uv = (gl_FragCoord.xy - 0.5*res) / res.y;
+      mat3 R = turn(t*0.12 + 0.6, 0.55);
+      vec3 ro = R * vec3(0.0, 0.0, 29.0), rd = R * normalize(vec3(uv, -1.9));
+      // Start at the block's edge: march only inside it.
+      vec3 inv = 1.0/rd, t0 = (-vec3(B) - ro)*inv, t1 = (vec3(B) - ro)*inv;
+      vec3 lo = min(t0, t1), hi = max(t0, t1); float tn = max(max(lo.x, lo.y), lo.z), tf = min(min(hi.x, hi.y), hi.z);
+      if (tn > tf || tf < 0.0) { gl_FragColor = vec4(0.0); return; }
+      float d = max(tn, 0.0) - 0.01; bool hit = false; vec3 p;
+      for (int i = 0; i < 140; i++){ p = ro + rd*d; float h = map(p); if (h < 0.0015*d*0.06) { hit = true; break; } d += h; if (d > tf + 0.1) break; }
+      if (!hit) { gl_FragColor = vec4(0.0); return; }
+      vec3 n = normal(p);
+      bool cut = box(p) > -0.01;                          // a face of the cut, not the sheet itself
+      vec3 teal = vec3(0.31, 0.61, 0.59), brass = vec3(0.79, 0.64, 0.36);
+      vec3 base = cut ? vec3(0.86, 0.84, 0.80) : (f(p) > 0.0 ? teal : brass);
+      vec3 L = normalize(vec3(0.5, 0.8, 0.6)), V = -rd;
+      float dif = max(dot(n, L), 0.0), amb = 0.28 + 0.22*n.y, rim = pow(1.0 - max(dot(n, V), 0.0), 3.0);
+      float spec = pow(max(dot(reflect(-L, n), V), 0.0), 32.0) * 0.14;
+      vec3 col = base*(amb + 0.85*dif) + spec + rim*0.12;
+      col = mix(col, vec3(0.05, 0.07, 0.08), clamp((d - 22.0)/14.0, 0.0, 0.55));   // depth: the far side recedes
+      gl_FragColor = vec4(pow(col, vec3(0.92)), 1.0);
+    }`;
+  const sh = (type, src) => { const s = gl.createShader(type); gl.shaderSource(s, src); gl.compileShader(s); if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) throw new Error(gl.getShaderInfoLog(s)); return s; };
+  let prog;
+  try { prog = gl.createProgram(); gl.attachShader(prog, sh(gl.VERTEX_SHADER, vs)); gl.attachShader(prog, sh(gl.FRAGMENT_SHADER, fs)); gl.linkProgram(prog); }
+  catch (e) { canvas.closest('figure').hidden = true; return; }
+  gl.useProgram(prog);
+  gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer());
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
+  const loc = gl.getAttribLocation(prog, 'p'); gl.enableVertexAttribArray(loc); gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
+  const uRes = gl.getUniformLocation(prog, 'res'), uT = gl.getUniformLocation(prog, 't');
+  const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function size() { const r = Math.min(devicePixelRatio || 1, 1.5), w = canvas.clientWidth * r, h = canvas.clientHeight * r;
+    if (canvas.width !== Math.round(w) || canvas.height !== Math.round(h)) { canvas.width = Math.round(w); canvas.height = Math.round(h); gl.viewport(0, 0, canvas.width, canvas.height); } }
+  let visible = true;
+  new IntersectionObserver(([e]) => { visible = e.isIntersecting; if (visible && !still) requestAnimationFrame(frame); }).observe(canvas);
+  const start = performance.now();
+  function frame(now) {
+    size(); gl.uniform2f(uRes, canvas.width, canvas.height); gl.uniform1f(uT, still ? 4.0 : (now - start) / 1000);
+    gl.drawArrays(gl.TRIANGLES, 0, 3);
+    if (visible && !still) requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>
