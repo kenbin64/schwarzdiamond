@@ -30,22 +30,11 @@
   p { margin: 0; max-width: 64ch; }
   .label { font: 500 12px var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--brass); }
 
-  /* The hero is always dark: the surface needs a deep ground. */
-  .hero { background: var(--deep); color: var(--deep-ink); overflow: hidden; }
-  .hero .wrap { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); gap: 24px; align-items: center; min-height: min(86vh, 760px); padding-block: 56px; }
-  .hero h1 { font-weight: 800; font-size: clamp(44px, 7vw, 86px); line-height: .95; letter-spacing: -0.02em; }
-  .hero .lede { font-size: clamp(18px, 1.6vw, 21px); color: var(--deep-ink); margin-top: 22px; max-width: 34ch; }
-  .hero .sub { color: var(--deep-soft); margin-top: 14px; max-width: 46ch; font-size: 16px; }
-  .hero .label { color: #c9a35c; }
   .stage { position: relative; aspect-ratio: 1; width: 100%; max-width: 620px; justify-self: end; }
   #surface { width: 100%; height: 100%; display: block; }
   .stage figcaption { position: absolute; left: 0; bottom: -4px; font: 12px var(--mono); color: var(--deep-soft); }
   .stage figcaption i { display: inline-block; width: 9px; height: 9px; border-radius: 2px; margin: 0 6px 0 12px; vertical-align: 0; }
   .stage figcaption i:first-child { margin-left: 0; }
-  nav.top { display: flex; justify-content: space-between; align-items: center; padding-block: 18px; font: 500 13px var(--mono); color: var(--deep-soft); }
-  nav.top b { color: var(--deep-ink); font: 700 15px var(--display); letter-spacing: .01em; }
-  nav.top .links { display: flex; gap: 18px; flex-wrap: wrap; }
-  nav.top a { color: inherit; text-decoration: none; } nav.top a:hover { color: var(--deep-ink); }
 
   section.band { padding-block: clamp(56px, 8vw, 104px); border-bottom: 1px solid var(--line); }
   .head { display: grid; gap: 12px; margin-bottom: 36px; }
@@ -86,28 +75,13 @@
   .limits { margin: 0; padding-left: 18px; display: grid; gap: 10px; color: var(--soft); font-size: 16px; max-width: 70ch; }
   .limits b { color: var(--ink); font-weight: 600; }
 
-  nav.top .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; }
-  nav.top .brand img { border-radius: 7px; display: block; }
   footer .lockup { width: min(320px, 100%); height: auto; border-radius: 12px; display: block; margin-bottom: 8px; }
   footer { padding-block: 40px 56px; font-size: 14px; color: var(--soft); display: grid; gap: 10px; }
   footer p { max-width: 80ch; }
 
-  /* The sidebar: the page's sections down the left, below the hero; the one in view is marked. Hidden on phones. */
-  main.site { display: grid; grid-template-columns: 200px minmax(0, 1fr); column-gap: 48px; max-width: 1240px; margin: 0 auto; padding-left: max(20px, env(safe-area-inset-left, 0px)); padding-right: max(20px, env(safe-area-inset-right, 0px)); }
-  .sections { min-width: 0; }
-  .sections .wrap { max-width: none; padding-left: 0; padding-right: 0; }
-  .side { position: sticky; top: 0; align-self: start; display: grid; gap: 2px; padding-block: clamp(56px, 8vw, 104px) 24px; }
-  .side-label { font: 500 12px var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--brass); margin-bottom: 10px; }
-  .side a { font: 500 15px var(--body); color: var(--soft); text-decoration: none; padding: 7px 12px; border-left: 2px solid var(--line); }
-  .side a:hover { color: var(--ink); border-left-color: var(--soft); }
-  .side a[aria-current="true"] { color: var(--teal); border-left-color: var(--teal); font-weight: 600; }
-  .side a:focus-visible { outline: 2px solid var(--teal); outline-offset: 2px; }
   html { scroll-behavior: smooth; }
-  section.band { scroll-margin-top: 16px; }
-  @media (max-width: 860px) { main.site { grid-template-columns: 1fr; } .side { display: none; } }
   @media (max-width: 860px) {
     .problems { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    .hero .wrap { grid-template-columns: 1fr; min-height: 0; padding-block: 24px 48px; }
     .stage { justify-self: center; max-width: 440px; }
     .two, .contrast { grid-template-columns: 1fr; gap: 28px; }
     .contrast > div + div { border-left: 0; border-top: 1px solid var(--line); }
@@ -116,40 +90,161 @@
   }
   @media (max-width: 560px) { .problems { grid-template-columns: 1fr; } nav.top .links { display: none; } }
   @media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto; } }
+
+  /* Layout: a slim top bar; the modules down the left from the moment the page loads; the page beside them. */
+  .topbar { background: var(--deep); color: var(--deep-soft); position: sticky; top: 0; z-index: 5; }
+  .topbar-in { max-width: 1320px; margin: 0 auto; padding: 12px max(20px, env(safe-area-inset-right, 0px)) 12px max(20px, env(safe-area-inset-left, 0px)); display: flex; justify-content: space-between; align-items: center; gap: 16px; font: 500 13px var(--mono); }
+  .topbar a { color: inherit; text-decoration: none; } .topbar a:hover { color: var(--deep-ink); }
+  .brand { display: flex; align-items: center; gap: 10px; } .brand b { color: var(--deep-ink); font: 700 15px var(--display); } .brand img { border-radius: 7px; display: block; }
+  .topbar .links { display: flex; gap: 18px; }
+  .menu-btn { display: none; align-items: center; gap: 8px; background: none; border: 1px solid #2c3639; color: var(--deep-ink); border-radius: 8px; padding: 6px 10px; font: 500 13px var(--mono); cursor: pointer; }
+  .menu-btn svg { display: block; }
+  .shell { max-width: 1320px; margin: 0 auto; display: grid; grid-template-columns: 220px minmax(0, 1fr); column-gap: 40px; padding-left: max(20px, env(safe-area-inset-left, 0px)); padding-right: max(20px, env(safe-area-inset-right, 0px)); }
+  .side { position: sticky; top: 54px; align-self: start; max-height: calc(100vh - 54px); overflow-y: auto; display: grid; gap: 1px; padding-block: 28px 24px; }
+  .side-label { font: 500 11px var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--brass); margin: 14px 0 4px 12px; }
+  .side a { font: 500 14.5px var(--body); color: var(--soft); text-decoration: none; padding: 6px 12px; border-left: 2px solid var(--line); }
+  .side a.side-top { font-weight: 600; color: var(--ink); }
+  .side a:hover { color: var(--ink); border-left-color: var(--soft); }
+  .side a[aria-current="true"] { color: var(--teal); border-left-color: var(--teal); font-weight: 600; }
+  .side a:focus-visible { outline: 2px solid var(--teal); outline-offset: 2px; }
+  .page { min-width: 0; }
+  .page .wrap { max-width: none; padding-left: 0; padding-right: 0; }
+  html { scroll-behavior: smooth; }
+  section.band { scroll-margin-top: 64px; padding-block: clamp(44px, 6vw, 80px); }
+  .mod { scroll-margin-top: 72px; }
+
+  /* The hero: a dark panel, short enough that the modules start on the first screen. */
+  .hero { background: var(--deep); color: var(--deep-ink); border-radius: 18px; margin-top: 28px; overflow: hidden; }
+  .hero-in { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, .7fr); gap: 20px; align-items: center; padding: 22px 32px; }
+  .hero h1 { font-weight: 800; font-size: clamp(34px, 4.2vw, 54px); line-height: .98; letter-spacing: -0.02em; }
+  .hero .lede { font-size: clamp(17px, 1.5vw, 20px); color: var(--deep-ink); margin-top: 16px; max-width: 36ch; }
+  .hero .sub { color: var(--deep-soft); margin-top: 10px; max-width: 46ch; font-size: 15px; }
+  .hero .label { color: #c9a35c; }
+  .hero .stage { max-width: 270px; justify-self: center; }
+  #modules { padding-top: 32px; }
+
+  /* The modules: one card each, grouped as in the sidebar. */
+  h3.group { font: 500 13px var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--brass); margin: 30px 0 12px; }
+  .mods { display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 14px; }
+  .mod { background: var(--panel); border: 1px solid var(--line); border-top: 3px solid var(--teal); border-radius: 10px; padding: 16px 18px; }
+  .mod:target { border-top-color: var(--brass); box-shadow: 0 0 0 2px var(--brass); }
+  .mod h4 { font: 600 19px/1.25 var(--display); margin: 0 0 10px; }
+  .mod dl { margin: 0; display: grid; gap: 2px; }
+  .mod dt { font: 500 11px var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--brass); margin-top: 6px; }
+  .mod dd { margin: 0; font-size: 15px; color: var(--soft); }
+  footer { padding-block: 40px 56px; }
+
+  @media (max-width: 860px) {
+    .shell { grid-template-columns: 1fr; }
+    .side { display: none; position: fixed; top: 50px; left: 0; right: 0; z-index: 6; max-height: calc(100vh - 50px); overflow-y: auto; background: var(--paper); padding: 8px 20px 20px; border-bottom: 1px solid var(--line); box-shadow: 0 12px 24px rgba(0,0,0,.25); }
+    .side.open { display: grid; }
+    .menu-btn { display: inline-flex; }
+    .hero-in { grid-template-columns: 1fr; padding: 24px; }
+    .hero .stage { max-width: 300px; }
+    .topbar .links { display: none; }
+  }
 </style>
 </head>
-<body>
+<body id="top">
 
-<header class="hero">
-  <div class="wrap" style="display:block;min-height:0;padding-block:0">
-    <nav class="top" aria-label="Sections"><a class="brand" href="#"><img src="assets/mark96.png" width="30" height="30" alt=""><b>Schwarz Diamond</b></a>
-      <span class="links"><a href="#purpose">Purpose</a><a href="#shape">The shape</a><a href="#results">Results</a><a href="#limits">Limits</a></span></nav>
-  </div>
-  <div class="wrap">
-    <div>
-      <p class="label">The Schwarz Diamond Hardener</p>
-      <h1>Geometry, not guesswork.</h1>
-      <p class="lede">It makes what you already have leaner, safer and more trustworthy, and proves every change it makes.</p>
-      <p class="sub">Code, 3D models, pictures, sound, articles and statements. No AI writes or changes anything. It measures, it checks, and every change can be undone.</p>
-    </div>
+<div class="topbar"><div class="topbar-in">
+  <a class="brand" href="#top"><img src="assets/mark96.png" width="30" height="30" alt=""><b>Schwarz Diamond</b></a>
+  <span class="links"><a href="#modules">Modules</a><a href="#results">Results</a><a href="#limits">Limits</a></span>
+  <button class="menu-btn" id="menu-btn" type="button" aria-expanded="false" aria-controls="side"><svg width="18" height="14" viewBox="0 0 18 14" aria-hidden="true"><path d="M1 1h16M1 7h16M1 13h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Modules</button>
+</div></div>
+
+<div class="shell">
+  <aside class="side" id="side" aria-label="Modules">
+    <a class="side-top" href="#top">Overview</a>
+    <p class="side-label">Code</p>
+    <a href="#m-source">Source code</a>
+    <a href="#m-webcode">Code that never runs</a>
+    <a href="#m-security">Security</a>
+    <p class="side-label">Media</p>
+    <a href="#m-models">3D models</a>
+    <a href="#m-images">Pictures</a>
+    <a href="#m-sound">Sound</a>
+    <p class="side-label">Words</p>
+    <a href="#m-text">Text</a>
+    <a href="#m-aistyle">AI detector and humanizer</a>
+    <a href="#m-bias">Bias</a>
+    <a href="#m-ask">Ask your documents</a>
+    <p class="side-label">Money</p>
+    <a href="#m-budget">Budget</a>
+    <p class="side-label">About</p>
+    <a href="#results">Results</a>
+    <a href="#purpose">What it is for</a>
+    <a href="#shape">The shape</a>
+    <a href="#without-ai">Without AI</a>
+    <a href="#limits">Limits</a>
+  </aside>
+  <div class="page">
+  <header class="hero">
+    <div class="hero-in">
+      <div>
+        <p class="label">The Schwarz Diamond Hardener</p>
+        <h1>Geometry, not guesswork.</h1>
+        <p class="lede">It makes what you already have leaner, safer and more trustworthy, and proves every change it makes.</p>
+        <p class="sub">No AI writes or changes anything. It measures, it checks, and every change can be undone.</p>
+      </div>
     <figure class="stage" style="margin:0">
       <canvas id="surface" aria-label="A block cut from the Schwarz Diamond surface, turning slowly. Its two sides, shown in teal and brass, are the two interlaced networks the surface keeps apart."></canvas>
       <figcaption><i style="background:#4f9c96"></i>one network <i style="background:#c9a35c"></i>the other, interlaced, never touching</figcaption>
     </figure>
-  </div>
-</header>
+    </div>
+  </header>
+  <main>
+  <section class="band" id="modules">
+    <div class="wrap">
+      <div class="head"><p class="label">The modules</p><h2>What it hardens</h2>
+        <p>Eleven modules on one engine. Each finds one kind of weakness, proves every change with a check, and leaves anything it cannot prove to you. They run in the app on your own computer.</p></div>
+      <h3 class="group">Code</h3>
+      <div class="mods">
+        <article class="mod" id="m-source"><h4>Source code</h4><dl><dt>Finds</dt><dd>Imports a file never uses, and top-level code that nothing anywhere in the project calls.</dd><dt>Checked by</dt><dd>The whole project is read to see what uses what; every changed file is parsed again, and the project's own tests run before and after.</dd><dt>Never</dt><dd>Tests, outside libraries, build output, or anything still in use.</dd></dl></article>
+        <article class="mod" id="m-webcode"><h4>Code that never runs</h4><dl><dt>Finds</dt><dd>The app's own functions that a real session in Chrome never touched, measured exactly.</dd><dt>Checked by</dt><dd>Reported only: code that did not run in one session may still run in another mode, on an error, or online.</dd><dt>Never</dt><dd>It removes nothing by itself.</dd></dl></article>
+        <article class="mod" id="m-security"><h4>Security</h4><dl><dt>Finds</dt><dd>Dependencies with published flaws, keys and tokens left in the project's files (masked in the report), scripts loaded from other sites, and dependencies never imported.</dd><dt>Checked by</dt><dd>Standard checks, including the public advisory database.</dd><dt>Never</dt><dd>It changes nothing in the project.</dd></dl></article>
+      </div>
+      <h3 class="group">Media</h3>
+      <div class="mods">
+        <article class="mod" id="m-models"><h4>3D models</h4><dl><dt>Finds</dt><dd>Parts of a model that never change what you see, such as textures too faint to show and animation tracks that never move.</dd><dt>Checked by</dt><dd>The model is drawn before and after from several angles and sizes, and animations are played in both; only an unchanged picture counts.</dd><dt>Never</dt><dd>Textures are never shrunk: that changes the picture, so it is your call.</dd></dl></article>
+        <article class="mod" id="m-images"><h4>Pictures</h4><dl><dt>Finds</dt><dd>What rides along in a photo: where it was taken, the camera, the software, the editing history.</dd><dt>Checked by</dt><dd>Both versions are decoded and every pixel compared; orientation and colour profile are kept.</dd><dt>Never</dt><dd>Your original is never changed; you save a cleaned copy.</dd></dl></article>
+        <article class="mod" id="m-sound"><h4>Sound</h4><dl><dt>Finds</dt><dd>Tags and padding inside a sound file.</dd><dt>Checked by</dt><dd>Both versions are decoded and every sample in every channel compared; loop points and cue markers are kept.</dd><dt>Never</dt><dd>Your original is never changed; you save a cleaned copy.</dd></dl></article>
+      </div>
+      <h3 class="group">Words</h3>
+      <div class="mods">
+        <article class="mod" id="m-text"><h4>Text</h4><dl><dt>Finds</dt><dd>Stray spaces, doubled words, repeated paragraphs, page clutter and filler; and a summary made of whole sentences copied word for word.</dd><dt>Checked by</dt><dd>Every number, name, quotation and hedge word is counted before and after, and must match.</dd><dt>Never</dt><dd>Words inside quotation marks are never touched.</dd></dl></article>
+        <article class="mod" id="m-aistyle"><h4>AI detector and humanizer</h4><dl><dt>Finds</dt><dd>A score of the habits common in AI-written text, with every point shown; and a rewrite of the habits a rule can safely change.</dd><dt>Checked by</dt><dd>The same fact count as Text: anything that would change a number, name or quotation is held back.</dd><dt>Never</dt><dd>It is not proof of who wrote anything, and must never be used to accuse anyone.</dd></dl></article>
+        <article class="mod" id="m-bias"><h4>Bias</h4><dl><dt>Finds</dt><dd>How coverage of one event splits into sides, what every side still agrees on, and each side's loaded words.</dd><dt>Checked by</dt><dd>Articles are compared by the facts they share.</dd><dt>Never</dt><dd>It measures agreement, not truth.</dd></dl></article>
+        <article class="mod" id="m-ask"><h4>Ask your documents</h4><dl><dt>Finds</dt><dd>Answers to your questions in your documents' own sentences, each with its file and line; a partial answer names what is missing; sources that disagree are both shown.</dd><dt>Checked by</dt><dd>A question word found in none of your documents blocks an answer.</dd><dt>Never</dt><dd>It never writes an answer or fills a gap.</dd></dl></article>
+      </div>
+      <h3 class="group">Money</h3>
+      <div class="mods">
+        <article class="mod" id="m-budget"><h4>Budget</h4><dl><dt>Finds</dt><dd>Repeated charges and fees in a bank statement.</dd><dt>Checked by</dt><dd>Read on your computer only; the statement never leaves it.</dd><dt>Never</dt><dd>It is not financial advice; you decide.</dd></dl></article>
+      </div>
+    </div>
+  </section>
 
-<main class="site">
-  <aside class="side" aria-label="On this page">
-    <p class="side-label">On this page</p>
-    <a href="#purpose">What it is for</a>
-    <a href="#shape">The shape</a>
-    <a href="#results">Results</a>
-    <a href="#covers">What it covers</a>
-    <a href="#without-ai">Without AI</a>
-    <a href="#limits">Limits</a>
-  </aside>
-  <div class="sections">
+  <section class="band" id="results">
+    <div class="wrap">
+      <div class="head"><p class="label">Measured</p><h2>Results on real files</h2>
+        <p>Every figure below was measured on real projects and files, and every change was checked before it counted.</p></div>
+      <div class="scroll">
+        <table class="ledger">
+          <thead><tr><th>Area</th><th>Measured</th><th>How it was checked</th></tr></thead>
+          <tbody>
+            <tr><td>3D models</td><td><span class="num">2.0 MB proven removable</span><br>across 98 of a finished browser game's 147 models, which were already compressed</td><td class="check">Each model drawn before and after from 6 angles at two sizes: at most 0.31% of pixels moved, 47 dB or better. Animations played in both.</td></tr>
+            <tr><td>Source code</td><td><span class="num">3 projects tested</span><br>unused imports and code nothing calls, removed from copies of each</td><td class="check">Each project's own test suite, before and after: 31, 28 and 10 tests passing, unchanged. No new errors when the pages load.</td></tr>
+            <tr><td>Pictures</td><td><span class="num">Hidden details removed</span><br>location, camera, software and editing history</td><td class="check">Both versions decoded by Chrome and compared: every pixel identical.</td></tr>
+            <tr><td>Sound</td><td><span class="num">Tags and padding removed</span><br>loop points and cue markers kept</td><td class="check">Both versions decoded: every sample in every channel identical.</td></tr>
+            <tr><td>News coverage</td><td><span class="num">4 articles, 0 factions</span><br>on one college football game; shared facts found in all of them</td><td class="check">Loaded language 0.3 to 0.7 words per 100, against 4 to 7 in deliberately slanted test articles.</td></tr>
+            <tr><td>Your documents</td><td><span class="num">Abstains when unsupported</span><br>asked whether the conference fined the school, it answered "your documents do not say"</td><td class="check">Answers are copied sentences with file and line; a key word absent from every document blocks an answer.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="note">Honest scale: on the game's models the free saving was about 3%, because an earlier compression pass had already done the heavy work. The hardener reports what is there, including when there is little to gain.</p>
+    </div>
+  </section>
+
   <section class="band" id="purpose">
     <div class="wrap">
       <div class="head"><p class="label">What it is for</p><h2>The problems it solves</h2>
@@ -179,40 +274,6 @@
     </div>
   </section>
 
-  <section class="band" id="results">
-    <div class="wrap">
-      <div class="head"><p class="label">Measured</p><h2>Results on real files</h2>
-        <p>Every figure below was measured on real projects and files, and every change was checked before it counted.</p></div>
-      <div class="scroll">
-        <table class="ledger">
-          <thead><tr><th>Area</th><th>Measured</th><th>How it was checked</th></tr></thead>
-          <tbody>
-            <tr><td>3D models</td><td><span class="num">2.0 MB proven removable</span><br>across 98 of a finished browser game's 147 models, which were already compressed</td><td class="check">Each model drawn before and after from 6 angles at two sizes: at most 0.31% of pixels moved, 47 dB or better. Animations played in both.</td></tr>
-            <tr><td>Source code</td><td><span class="num">3 projects tested</span><br>unused imports and code nothing calls, removed from copies of each</td><td class="check">Each project's own test suite, before and after: 31, 28 and 10 tests passing, unchanged. No new errors when the pages load.</td></tr>
-            <tr><td>Pictures</td><td><span class="num">Hidden details removed</span><br>location, camera, software and editing history</td><td class="check">Both versions decoded by Chrome and compared: every pixel identical.</td></tr>
-            <tr><td>Sound</td><td><span class="num">Tags and padding removed</span><br>loop points and cue markers kept</td><td class="check">Both versions decoded: every sample in every channel identical.</td></tr>
-            <tr><td>News coverage</td><td><span class="num">4 articles, 0 factions</span><br>on one college football game; shared facts found in all of them</td><td class="check">Loaded language 0.3 to 0.7 words per 100, against 4 to 7 in deliberately slanted test articles.</td></tr>
-            <tr><td>Your documents</td><td><span class="num">Abstains when unsupported</span><br>asked whether the conference fined the school, it answered "your documents do not say"</td><td class="check">Answers are copied sentences with file and line; a key word absent from every document blocks an answer.</td></tr>
-          </tbody>
-        </table>
-      </div>
-      <p class="note">Honest scale: on the game's models the free saving was about 3%, because an earlier compression pass had already done the heavy work. The hardener reports what is there, including when there is little to gain.</p>
-    </div>
-  </section>
-
-  <section class="band" id="covers">
-    <div class="wrap two">
-      <div class="head" style="margin:0"><p class="label">What it covers</p><h2>One engine, many kinds of file</h2>
-        <p>Every module runs through the same base engine: every part becomes a point that knows only its neighbours, and every reading is the same act repeated until the answer settles.</p></div>
-      <div class="modules">
-        <div><h3>Code</h3><ul><li><b>Source code</b>unused imports and code nothing calls</li><li><b>Code that never runs</b>what a real session never touches</li><li><b>Security</b>known flaws, exposed keys, outside scripts</li></ul></div>
-        <div><h3>Media</h3><ul><li><b>3D models</b>detail that never reaches the screen</li><li><b>Pictures</b>hidden details, identical pixels</li><li><b>Sound</b>tags and padding, identical samples</li></ul></div>
-        <div><h3>Words</h3><ul><li><b>Text</b>fixes by rule; summaries in the original words</li><li><b>AI detector and humanizer</b>a style score, every point explained; rewrites that keep every fact</li><li><b>Bias</b>sides, and what they agree on</li><li><b>Ask your documents</b>answers with file and line</li></ul></div>
-        <div><h3>Money</h3><ul><li><b>Budget</b>repeat charges and fees, from a statement</li></ul></div>
-      </div>
-    </div>
-  </section>
-
   <section class="band" id="without-ai">
     <div class="wrap">
       <div class="head"><p class="label">Without AI</p><h2>Measure, do not predict</h2></div>
@@ -235,14 +296,14 @@
       </ul>
     </div>
   </section>
-  </div>
-</main>
-
-<footer class="wrap">
+  </main>
+<footer>
   <img class="lockup" src="assets/logo.jpg" width="684" height="430" alt="Schwarz Diamond logo: a faceted diamond above the name SCHWARZDIAMOND">
   <p>The Schwarz Diamond Hardener is in private development. It is a portfolio project, not a product for sale.</p>
   <p>Concept and direction: Kenneth W. Bingham. Built with the help of Claude AI under a standing directive to be skeptical, to insist on proof, and to allow no claim that is not demonstrated in tested code. The ideas are the author's; the AI implemented and verified them, it did not originate them.</p>
 </footer>
+  </div>
+</div>
 
 <script>
 // The surface, drawn from its equation: sin x sin y sin z + sin x cos y cos z + cos x sin y cos z + cos x cos y sin z = 0.
@@ -309,12 +370,22 @@
 })();
 </script>
 <script>
-// The sidebar marks the section being read: the one whose top has most recently passed the upper third of the screen.
+// The sidebar marks what is being read: the module or section whose top most recently passed the upper third of the screen.
 (function () {
   const links = [...document.querySelectorAll('.side a')], byId = new Map(links.map(a => [a.getAttribute('href').slice(1), a]));
-  const mark = id => links.forEach(a => a.setAttribute('aria-current', String(a === byId.get(id))));
+  const side = document.querySelector('.side');
+  const mark = id => {
+    links.forEach(a => a.setAttribute('aria-current', String(a === byId.get(id))));
+    // On a phone the modules are a sideways row: keep the marked one in sight.
+    const a = byId.get(id); if (a && side.scrollWidth > side.clientWidth) side.scrollTo({ left: a.offsetLeft - 16, behavior: 'smooth' });
+  };
   const sections = [...byId.keys()].map(id => document.getElementById(id)).filter(Boolean);
   const pick = () => { let cur = sections[0]; for (const s of sections) if (s.getBoundingClientRect().top < innerHeight / 3) cur = s; mark(cur.id); };
+  const btn = document.getElementById('menu-btn');
+  const open = yes => { side.classList.toggle('open', yes); btn.setAttribute('aria-expanded', String(yes)); };
+  btn.addEventListener('click', () => open(!side.classList.contains('open')));
+  links.forEach(a => a.addEventListener('click', () => open(false)));
+  addEventListener('keydown', e => { if (e.key === 'Escape') open(false); });
   addEventListener('scroll', pick, { passive: true }); addEventListener('resize', pick); pick();
 })();
 </script>
