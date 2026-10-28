@@ -10,7 +10,10 @@ const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '
 const view = $('tool'), body = $('tool-body');
 
 // ---- Small shared pieces ----
-const readText = f => f.text();
+// A file picked for a text tool must be text. A picture or sound read as text is mostly zero bytes and broken
+// characters: said plainly, rather than "held back" or "nothing found" (found 2026-10-28 by picking a JPEG).
+const isBinary = t => t.includes('\u0000') || (t.match(/\uFFFD/g) || []).length > Math.max(3, t.length / 100);
+const readText = async f => { const t = await f.text(); if (isBinary(t)) throw new Error(`"${f.name}" is not a text file. Choose a .txt, .md, .csv or code file.`); return t; };
 const readBytes = async f => H.Buffer.from(new Uint8Array(await f.arrayBuffer()));
 function download(name, data, type = 'text/plain') {
   const url = URL.createObjectURL(data instanceof Blob ? data : new Blob([data], { type }));
@@ -167,7 +170,9 @@ const TOOLS = {
     const el = panel(`<label class="file">Choose a bank statement (.csv with date, description, amount, category) <input type="file" class="pick" accept=".csv,text/csv"></label><button class="run primary" type="button">Run</button>`);
     wire(el, async res => {
       const f = el.querySelector('.pick').files[0]; if (!f) throw new Error('choose a CSV statement first.');
-      const r = H.scanStatement(await readText(f));
+      const csv = await readText(f), head = csv.replace(/^\uFEFF/, '').split(/\r?\n/).find(l => l.trim()) || '';
+      if (!head.includes(',')) throw new Error('that does not look like a CSV statement: save the bank statement or spreadsheet as CSV, with date, description and amount columns.');
+      const r = H.scanStatement(csv);
       status(el, `${r.findings.length} pattern(s) found. Not financial advice: you decide.`); res.append(findings(r));
     });
     return el;

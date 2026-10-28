@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Schwarz Diamond</title>
-<meta name="description" content="The Schwarz Diamond Hardener makes code, models, pictures, sound and text leaner, safer and more trustworthy, by measurement and geometry rather than AI. Every change is proven and reversible.">
+<meta name="description" content="The Schwarz Diamond Hardener makes code, models, pictures, sound and text leaner, safer and clearer, by measurement and geometry rather than AI. Every change is checked and can be undone.">
 <link rel="icon" type="image/png" sizes="32x32" href="assets/icon32.png">
 <link rel="apple-touch-icon" href="assets/icon180.png">
 <link rel="stylesheet" href="assets/fonts/fonts.css">
@@ -117,7 +117,7 @@
   .hero { background: var(--deep); color: var(--deep-ink); border-radius: 18px; margin-top: 28px; overflow: hidden; }
   .hero-in { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, .7fr); gap: 20px; align-items: center; padding: 22px 32px; }
   .hero h1 { font-weight: 800; font-size: clamp(34px, 4.2vw, 54px); line-height: .98; letter-spacing: -0.02em; }
-  .hero .lede { font-size: clamp(17px, 1.5vw, 20px); color: var(--deep-ink); margin-top: 16px; max-width: 36ch; }
+  .hero .lede { font-size: clamp(17px, 1.5vw, 20px); color: var(--deep-ink); margin-top: 14px; max-width: 46ch; }
   .hero .sub { color: var(--deep-soft); margin-top: 10px; max-width: 46ch; font-size: 15px; }
   .hero .label { color: #c9a35c; }
   .hero .stage { max-width: 270px; justify-self: center; }
@@ -211,6 +211,12 @@
   .ladder li { display: grid; grid-template-columns: 34px minmax(0, 1fr); gap: 14px; padding: 12px 0 12px 0; margin-left: -18px; align-items: start; }
   .ladder .lv { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%; background: var(--panel); border: 2px solid var(--teal); color: var(--teal); font: 600 14px var(--mono); }
   .ladder b { font: 600 18px var(--display); } .ladder p { margin: 2px 0 0; color: var(--soft); font-size: 15.5px; }
+
+  .hero .what { color: var(--deep-soft); font-size: 14.5px; line-height: 1.55; margin-top: 12px; max-width: 54ch; }
+  .hero .what b { color: #c9a35c; font-weight: 600; }
+  /* The modules start on the first screen of a laptop (1366 x 768): tighter space between the hero and the first cards. */
+  #modules { padding-top: 22px; } #modules .head { margin-bottom: 14px; gap: 6px; } #modules h3.group:first-of-type { margin-top: 10px; }
+  .hero-in { padding-block: 18px; }
 </style>
 </head>
 <body id="top">
@@ -255,9 +261,9 @@
       <div>
         <p class="label">The Schwarz Diamond Hardener</p>
         <h1>Geometry, not guesswork.</h1>
-        <p class="lede">It makes what you already have leaner, safer and more trustworthy, and proves every change it makes.</p>
-        <p class="sub">No AI writes or changes anything. It measures, it checks, and every change can be undone.</p>
-        <p class="sub"><a class="cta" href="#m-text">Try it now: start with Text</a> or pick any module on the left.</p>
+        <p class="lede">It makes what you already have leaner, safer and clearer, and shows its work for every change.</p>
+        <p class="what"><b>What is the Schwarz Diamond?</b> A shape whose channels follow the pattern of the atoms in a diamond: each point joined to its neighbours, the least material holding up the most surface. The tools work the same way: what you give goes in, is turned once, and comes out ready to be the next step's input, chained like a diamond's atoms. After seven steps the whole becomes one new piece, so nothing grows out of control. No AI involved.</p>
+        <p class="sub"><a class="cta" href="#m-text">Try it now: start with Text</a></p>
       </div>
     <figure class="stage" style="margin:0">
       <canvas id="surface" aria-label="A block cut from the Schwarz Diamond surface, turning slowly. Its two sides, shown in teal and brass, are the two interlaced networks the surface keeps apart."></canvas>
@@ -275,7 +281,7 @@
   <section class="band" id="modules">
     <div class="wrap">
       <div class="head"><p class="label">The modules</p><h2>What it hardens</h2>
-        <p>Thirteen modules on one engine. Each finds one kind of weakness, proves every change with a check, and leaves anything it cannot prove to you. Most run right here in your browser: click any card, or pick one in the sidebar. Your files are read by your browser and never sent anywhere. A few need the app on a computer, and say so.</p></div>
+        <p>Thirteen modules on one engine. Click a card to use it, right here in your browser; your files never leave it.</p></div>
       <h3 class="group">Code</h3>
       <div class="mods">
         <article class="mod" id="m-source"><h4>Source code</h4><dl><dt>Finds</dt><dd>Imports a file never uses, and top-level code that nothing anywhere in the project calls.</dd><dt>Checked by</dt><dd>The whole project is read to see what uses what; every changed file is parsed again, and the project's own tests run before and after.</dd><dt>Never</dt><dd>Tests, outside libraries, build output, or anything still in use.</dd></dl><a class="use" href="#m-source">Open</a></article>
@@ -338,7 +344,7 @@
         <div><h3>Fragile points</h3><p>The one part everything rests on, and changes with no way back. Pointed out for a decision, never changed behind your back.</p></div>
         <div><h3>Slanted or machine-sounding text</h3><p>Articles about the same event that split into sides, and what every side still agrees on. Writing that reads as AI-made, scored habit by habit and rewritten by rule.</p></div>
         <div><h3>Answers you can check</h3><p>Questions answered from your own documents, in their own words, with the file and line. When they do not say, it says so.</p></div>
-        <div><h3>Trust</h3><p>The same input gives the same answer every time. It runs on your own computer, and nothing is sent anywhere.</p></div>
+        <div><h3>Check it yourself</h3><p>The same input gives the same answer every time. Open your browser's network panel while you use a tool: nothing is sent anywhere.</p></div>
       </div>
     </div>
   </section>
