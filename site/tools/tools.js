@@ -167,13 +167,25 @@ const TOOLS = {
     return el;
   },
   budget: () => {
-    const el = panel(`<label class="file">Choose a bank statement (.csv with date, description, amount, category) <input type="file" class="pick" accept=".csv,text/csv"></label><button class="run primary" type="button">Run</button>`);
+    const el = panel(`<label class="file">Choose your bank statement: the PDF your bank gives you, or a CSV export <input type="file" class="pick" accept=".pdf,.csv,application/pdf,text/csv"></label><button class="run primary" type="button">Run</button>`);
     wire(el, async res => {
-      const f = el.querySelector('.pick').files[0]; if (!f) throw new Error('choose a CSV statement first.');
-      const csv = await readText(f), head = csv.replace(/^\uFEFF/, '').split(/\r?\n/).find(l => l.trim()) || '';
-      if (!head.includes(',')) throw new Error('that does not look like a CSV statement: save the bank statement or spreadsheet as CSV, with date, description and amount columns.');
-      const r = H.scanStatement(csv);
-      status(el, `${r.findings.length} pattern(s) found. Not financial advice: you decide.`); res.append(findings(r));
+      const f = el.querySelector('.pick').files[0]; if (!f) throw new Error('choose a statement first (PDF or CSV).');
+      let r;
+      if (/\.pdf$/i.test(f.name) || f.type === 'application/pdf') {
+        // pdf.js (Mozilla's PDF reader) from this site, loaded only now; the statement is read inside your browser.
+        const pdfjs = await import('./pdf/pdf.min.js');
+        pdfjs.GlobalWorkerOptions.workerSrc = new URL('./pdf/pdf.worker.min.js', import.meta.url).href;
+        const st = await H.readStatementPdf(pdfjs, new Uint8Array(await f.arrayBuffer()));
+        if (!st.rows.length) throw new Error('no transactions could be read from that PDF. It may be a scan (a picture of a page) rather than a statement with text in it.');
+        r = H.scanPeriod(st);
+      } else {
+        const csv = await readText(f), head = csv.replace(/^\uFEFF/, '').split(/\r?\n/).find(l => l.trim()) || '';
+        if (!head.includes(',')) throw new Error('that does not look like a CSV statement: save the bank statement or spreadsheet as CSV, with date, description and amount columns.');
+        r = H.scanStatement(csv);
+      }
+      const proof = (r.good || []).find(g => /match the statement|WARNING/.test(g));
+      status(el, `${r.summary || 'Read'}. ${proof ? proof.charAt(0).toUpperCase() + proof.slice(1) + '.' : ''} Not financial advice: patterns only, you decide.`);
+      res.append(findings(r));
     });
     return el;
   },
