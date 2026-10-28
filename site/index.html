@@ -246,7 +246,7 @@
     <a href="#m-sound">Sound</a>
     <p class="side-label">Words</p>
     <a href="#m-text">Text</a>
-    <a href="#m-aistyle">AI detector and humanizer</a>
+    <a href="#m-aistyle">Humanizer</a>
     <a href="#m-bias">Bias</a>
     <a href="#m-ask">Ask your documents</a>
     <p class="side-label">Web</p>
@@ -303,7 +303,7 @@
       <h3 class="group">Words</h3>
       <div class="mods">
         <article class="mod" id="m-text"><h4>Text</h4><dl><dt>Finds</dt><dd>Stray spaces, doubled words, repeated paragraphs, page clutter, filler, and sound-alike words where the words next to them settle the spelling (its going, their is, your welcome); and a summary made of whole sentences copied word for word.</dd><dt>Checked by</dt><dd>Every number, name, quotation and hedge word is counted before and after, and must match.</dd><dt>Never</dt><dd>Words inside quotation marks are never touched.</dd></dl><a class="use" href="#m-text">Open</a></article>
-        <article class="mod" id="m-aistyle"><h4>AI detector and humanizer</h4><dl><dt>Finds</dt><dd>A score of the habits common in AI-written text, with every point shown; and a rewrite of the habits a rule can safely change.</dd><dt>Checked by</dt><dd>The same fact count as Text: anything that would change a number, name or quotation is held back.</dd><dt>Never</dt><dd>It is not proof of who wrote anything, and must never be used to accuse anyone.</dd></dl><a class="use" href="#m-aistyle">Open</a></article>
+        <article class="mod" id="m-aistyle"><h4>Humanizer</h4><dl><dt>Finds</dt><dd>What makes AI-written text read machine-made: stock phrases, empty lead-ins, stiff wording, no contractions. It rewrites them the way a person would, and a meter shows how AI-like the text reads before and after.</dd><dt>Checked by</dt><dd>The same fact count as Text: a rewrite that would change a number, name or quotation is held back.</dd><dt>Never</dt><dd>It does not judge who wrote anything. AI-written text is welcome here; the point is to make it read naturally.</dd></dl><a class="use" href="#m-aistyle">Open</a></article>
         <article class="mod" id="m-bias"><h4>Bias</h4><dl><dt>Finds</dt><dd>How coverage of one event splits into sides, what every side still agrees on, and each side's loaded words.</dd><dt>Checked by</dt><dd>Articles are compared by the facts they share.</dd><dt>Never</dt><dd>It measures agreement, not truth.</dd></dl><a class="use" href="#m-bias">Open</a></article>
         <article class="mod" id="m-ask"><h4>Ask your documents</h4><dl><dt>Finds</dt><dd>Answers to your questions in your documents' own sentences, each with its file and line; a partial answer names what is missing; sources that disagree are both shown. A follow-up with "he", "they" or "it" is read against the last answer; if that could mean more than one, it asks you to rephrase.</dd><dt>Checked by</dt><dd>A question word found in none of your documents blocks an answer.</dd><dt>Never</dt><dd>It never writes an answer or fills a gap.</dd></dl><a class="use" href="#m-ask">Open</a></article>
       </div>
@@ -347,7 +347,7 @@
         <div><h3>Weight that does nothing</h3><p>Code that nothing uses, model detail that never reaches the screen, filler words. Removed only when a check proves nothing visible or working changed.</p></div>
         <div><h3>Exposure you cannot see</h3><p>Where a photo was taken, which software made a file, keys left in source code, dependencies with known flaws.</p></div>
         <div><h3>Fragile points</h3><p>The one part everything rests on, and changes with no way back. Pointed out for a decision, never changed behind your back.</p></div>
-        <div><h3>Slanted or machine-sounding text</h3><p>Articles about the same event that split into sides, and what every side still agrees on. Writing that reads as AI-made, scored habit by habit and rewritten by rule.</p></div>
+        <div><h3>Slanted or machine-sounding text</h3><p>Articles about the same event that split into sides, and what every side still agrees on. Writing that reads machine-made, rewritten so it reads like a person wrote it.</p></div>
         <div><h3>Answers you can check</h3><p>Questions answered from your own documents, in their own words, with the file and line. When they do not say, it says so.</p></div>
         <div><h3>Check it yourself</h3><p>The same input gives the same answer every time. Open your browser's network panel while you use a tool: the tool's code arrives the first time, and nothing of yours ever leaves.</p></div>
       </div>
@@ -388,7 +388,7 @@
         <li><b>It does not write.</b> It cannot compose new sentences or new code; it removes, rearranges and quotes.</li>
         <li><b>It matches what is written.</b> Two articles saying the same thing in different words can be missed, and so can an answer phrased differently from the question.</li>
         <li><b>It measures agreement, not truth.</b> A consensus is what the sources share; they can all be wrong together.</li>
-        <li><b>Its style score is not proof.</b> It can say text reads like AI; it cannot say who wrote it, and should never be used to accuse anyone.</li>
+        <li><b>The humanizer's meter is a guide, not a verdict.</b> It shows which habits make text read machine-made; it says nothing about who wrote it, and nothing here puts down text because AI helped write it.</li>
         <li><b>It leaves judgment to people.</b> Anything it cannot prove safe is reported, not changed.</li>
       </ul>
     </div>

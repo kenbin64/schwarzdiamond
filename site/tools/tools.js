@@ -23,7 +23,7 @@ function download(name, data, type = 'text/plain') {
   setTimeout(() => URL.revokeObjectURL(url), 5000);
 }
 // Where a text result can go next: the output of one step becomes the input of the next (z becomes the next x).
-const NEXT = { text: 'Text', aistyle: 'AI detector', balance: 'Balance' };
+const NEXT = { text: 'Text', aistyle: 'Humanizer', balance: 'Balance' };
 let carried = null;                     // text carried from one tool's output into the next tool's input
 function out(title, text, file, next = []) {
   const box = document.createElement('div'); box.className = 'out';
@@ -94,15 +94,14 @@ const TOOLS = {
   text: mode => {
     const el = panel(`<fieldset class="mode"><legend>What to do</legend>
       <label><input type="radio" name="tmode" value="fix" ${mode !== 'ai' ? 'checked' : ''}> Fix and summarize</label>
-      <label><input type="radio" name="tmode" value="ai" ${mode === 'ai' ? 'checked' : ''}> AI detector and humanizer</label></fieldset>
+      <label><input type="radio" name="tmode" value="ai" ${mode === 'ai' ? 'checked' : ''}> Humanize (make AI-written text read naturally)</label></fieldset>
       ${textInput('Your text', '.txt,.md,.markdown,text/plain')}<button class="run primary" type="button">Run</button>`);
     wire(el, async res => {
       const { text, name } = await sourceText(el), ai = el.querySelector('input[name=tmode]:checked').value === 'ai';
       if (ai) {
         const r = H.scanAi(text, name), a = r.ai;
-        status(el, `AI-style score ${a.before.score} of 100 (${a.before.band}); after humanizing ${a.after.score}. A likelihood from style, not proof: never use it to accuse anyone.`);
-        res.append(out('The score, habit by habit', a.before.signals.map(s => `${s.name.padEnd(16)} +${String(s.points).padStart(2)} of ${s.max}   ${s.measured}`).join('\n')),
-          out('Humanized text', a.held.length ? `Held back: a number, name or quotation would have changed, so here is your text unchanged.\n\n${a.humanized}` : a.humanized, 'humanized.txt', ['text']), findings(r));
+        status(el, `Reads like AI: ${a.before.score} of 100 before, ${a.after.score} after humanizing (${a.changes} rewrite${a.changes === 1 ? '' : 's'}). The meter is a guide to how it reads, not a verdict on who wrote it.`);
+        res.append(out('Humanized text', a.held.length ? `Held back: a number, name or quotation would have changed, so here is your text unchanged.\n\n${a.humanized}` : a.humanized, 'humanized.txt', ['text']), out('How AI-like it read, habit by habit', a.before.signals.map(s => `${s.name.padEnd(16)} +${String(s.points).padStart(2)} of ${s.max}   ${s.measured}`).join('\n')), findings(r));
       } else {
         const r = H.scanText(text);
         status(el, r.held?.length ? 'Held back: the fact check found a change it could not explain, so your text is unchanged.' : `${r.changes.length} fix(es) by rule; every number, name, quotation and hedge word came through.`);
