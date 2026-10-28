@@ -205,6 +205,12 @@
   .step small { font: 400 12px var(--body); letter-spacing: 0; text-transform: none; color: var(--soft); }
   .next { margin: 2px 0 0; font-size: 13.5px; color: var(--soft); display: flex; gap: 6px; flex-wrap: wrap; align-items: center; max-width: none; }
   .next button { padding: 4px 10px !important; font-size: 13px !important; }
+
+  /* How it works: the ladder, one level resting on the last. */
+  .ladder { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; border-left: 2px solid var(--line); margin-left: 14px; }
+  .ladder li { display: grid; grid-template-columns: 34px minmax(0, 1fr); gap: 14px; padding: 12px 0 12px 0; margin-left: -18px; align-items: start; }
+  .ladder .lv { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%; background: var(--panel); border: 2px solid var(--teal); color: var(--teal); font: 600 14px var(--mono); }
+  .ladder b { font: 600 18px var(--display); } .ladder p { margin: 2px 0 0; color: var(--soft); font-size: 15.5px; }
 </style>
 </head>
 <body id="top">
@@ -239,7 +245,7 @@
     <p class="side-label">About</p>
     <a href="#results">Results</a>
     <a href="#purpose">What it is for</a>
-    <a href="#shape">The shape</a>
+    <a href="#how">How it works</a>
     <a href="#without-ai">Without AI</a>
     <a href="#limits">Limits</a>
   </aside>
@@ -337,17 +343,19 @@
     </div>
   </section>
 
-  <section class="band" id="shape">
+  <section class="band" id="how">
     <div class="wrap">
-      <div class="head"><p class="label">The shape</p><h2>Why a minimal surface</h2>
-        <p>The Schwarz Diamond is a surface found in nature and in engineering: it divides space into two interlaced channels with the least material for the most surface. Its properties are the questions the hardener puts to anything you give it. The shape decides what to look for; plain measurements and checks give the answers.</p></div>
-      <div class="props">
-        <div class="prop"><span class="n">01</span><p><b>Least material, most surface.</b> Nothing is there that does not do work.</p><q>What carries nothing?</q></div>
-        <div class="prop"><span class="n">02</span><p><b>Every point is held up by the lines beneath it.</b> Nothing floats.</p><q>What holds up what, and what is floating?</q></div>
-        <div class="prop"><span class="n">03</span><p><b>Load gathers along certain lines.</b> Some parts carry far more than others.</p><q>Where would one failure bring the rest down?</q></div>
-        <div class="prop"><span class="n">04</span><p><b>Two networks, woven together, that never touch.</b></p><q>Which sides keep to themselves, and what crosses between them?</q></div>
-        <div class="prop"><span class="n">05</span><p><b>Every turn of 90 degrees opens a new direction.</b> Waste, security, reliability and resilience are measured apart.</p><q>Does a saving here cost something there?</q></div>
-      </div>
+      <div class="head"><p class="label">How it works</p><h2>Built level by level</h2>
+        <p>Every tool runs in three steps: input, transform, output. You do not need to know what the transform does; this is the shape it follows. Each level rests on the one before it, and nothing is added that the level below cannot hold up.</p></div>
+      <ol class="ladder">
+        <li><span class="lv">0</span><div><b>Void</b><p>Nothing is assumed. Before you give it anything there is no answer and no guess, and where your input says nothing, the result says so.</p></div></li>
+        <li><span class="lv">1</span><div><b>Point</b><p>Your input is taken apart into single units, each with its own identity: a sentence, a word, a claim, a block of a picture, a piece of code.</p></div></li>
+        <li><span class="lv">2</span><div><b>Line</b><p>Each unit is related to its immediate neighbours: the sentence it leans on, the word beside it, the code that uses it. A unit knows only its neighbours, and what is learned passes from neighbour to neighbour.</p></div></li>
+        <li><span class="lv">3</span><div><b>Plane</b><p>One purpose, one table: every unit laid out for a single question. What is extra? What is exposed? What does this sentence rest on?</p></div></li>
+        <li><span class="lv">4</span><div><b>Volume</b><p>Tables are stacked for depth: several files, several articles, several kinds of weakness, each measured apart, so a saving in one place never hides a cost in another.</p></div></li>
+        <li><span class="lv">5</span><div><b>Wholeness</b><p>It comes together as one result you can use: the clean copy, the answer with its source, the verdict. That result is a new point. Carry it into the next tool and the build starts again.</p></div></li>
+      </ol>
+      <p class="note">The Schwarz Diamond is the shape behind it: the least material for the most surface, and every point held up by the lines beneath it.</p>
     </div>
   </section>
 
