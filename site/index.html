@@ -179,6 +179,8 @@
     <a href="#m-aistyle">AI detector and humanizer</a>
     <a href="#m-bias">Bias</a>
     <a href="#m-ask">Ask your documents</a>
+    <p class="side-label">Web</p>
+    <a href="#m-pages">Read pages</a>
     <p class="side-label">Money</p>
     <a href="#m-budget">Budget</a>
     <p class="side-label">About</p>
@@ -207,7 +209,7 @@
   <section class="band" id="modules">
     <div class="wrap">
       <div class="head"><p class="label">The modules</p><h2>What it hardens</h2>
-        <p>Twelve modules on one engine. Each finds one kind of weakness, proves every change with a check, and leaves anything it cannot prove to you. They run in the app on your own computer.</p></div>
+        <p>Thirteen modules on one engine. Each finds one kind of weakness, proves every change with a check, and leaves anything it cannot prove to you. They run in the app on your own computer.</p></div>
       <h3 class="group">Code</h3>
       <div class="mods">
         <article class="mod" id="m-source"><h4>Source code</h4><dl><dt>Finds</dt><dd>Imports a file never uses, and top-level code that nothing anywhere in the project calls.</dd><dt>Checked by</dt><dd>The whole project is read to see what uses what; every changed file is parsed again, and the project's own tests run before and after.</dd><dt>Never</dt><dd>Tests, outside libraries, build output, or anything still in use.</dd></dl></article>
@@ -227,6 +229,10 @@
         <article class="mod" id="m-aistyle"><h4>AI detector and humanizer</h4><dl><dt>Finds</dt><dd>A score of the habits common in AI-written text, with every point shown; and a rewrite of the habits a rule can safely change.</dd><dt>Checked by</dt><dd>The same fact count as Text: anything that would change a number, name or quotation is held back.</dd><dt>Never</dt><dd>It is not proof of who wrote anything, and must never be used to accuse anyone.</dd></dl></article>
         <article class="mod" id="m-bias"><h4>Bias</h4><dl><dt>Finds</dt><dd>How coverage of one event splits into sides, what every side still agrees on, and each side's loaded words.</dd><dt>Checked by</dt><dd>Articles are compared by the facts they share.</dd><dt>Never</dt><dd>It measures agreement, not truth.</dd></dl></article>
         <article class="mod" id="m-ask"><h4>Ask your documents</h4><dl><dt>Finds</dt><dd>Answers to your questions in your documents' own sentences, each with its file and line; a partial answer names what is missing; sources that disagree are both shown. A follow-up with "he", "they" or "it" is read against the last answer; if that could mean more than one, it asks you to rephrase.</dd><dt>Checked by</dt><dd>A question word found in none of your documents blocks an answer.</dd><dt>Never</dt><dd>It never writes an answer or fills a gap.</dd></dl></article>
+      </div>
+      <h3 class="group">Web</h3>
+      <div class="mods">
+        <article class="mod" id="m-pages"><h4>Read pages</h4><dl><dt>Finds</dt><dd>The article inside a web page, without the menus, advertising and clutter; its reading level and layout problems (walls of text, overlong sentences); and, across several articles, the same thing given different numbers.</dd><dt>Checked by</dt><dd>The text fixes' fact check; reading level by the standard Flesch-Kincaid formula; contradictions shown with both sentences, neither chosen as right.</dd><dt>Never</dt><dd>It changes nothing on the original page or its server, and publishes nothing: the readable copy opens in a new tab on your own computer, for readability and clarity.</dd></dl></article>
       </div>
       <h3 class="group">Money</h3>
       <div class="mods">
