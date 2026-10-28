@@ -6,5 +6,6 @@ The hardener itself is in private development and is not in this repository. Thi
 
 - `site/` is the page, served as plain files. The surface in the hero is drawn live in the browser from the Schwarz Diamond equation, `sin x sin y sin z + sin x cos y cos z + cos x sin y cos z + cos x cos y sin z = 0`.
 - `wrangler.jsonc` publishes `site/` to Cloudflare.
+- `site/tools/tools.js` is the interface for the working tools. They run in the visitor's browser, on the visitor's own files, which never leave the browser. The tool code they call, `site/tools/hardener.js`, is built from the private hardener repository and deployed with the site; it is not kept here.
 
 Concept and direction: Kenneth W. Bingham. Built with the help of Claude AI under a standing directive to be skeptical, to insist on proof, and to allow no claim that is not demonstrated in tested code. The ideas are the author's; the AI implemented and verified them, it did not originate them.

@@ -152,6 +152,52 @@
     .hero .stage { max-width: 300px; }
     .topbar .links { display: none; }
   }
+
+  /* The working tools: a module's tool replaces the overview; files stay in the browser. */
+  .tool { padding-block: 28px 56px; display: grid; gap: 14px; }
+  .tool .back { font: 500 13px var(--mono); color: var(--soft); text-decoration: none; } .tool .back:hover { color: var(--teal); }
+  .tool h2 { font-size: clamp(28px, 3.4vw, 38px); }
+  .tool-about dl { margin: 0; display: grid; grid-template-columns: max-content 1fr; gap: 4px 14px; font-size: 15px; color: var(--soft); max-width: 80ch; }
+  .tool-about dt { font: 500 11px var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--brass); padding-top: 3px; } .tool-about dd { margin: 0; }
+  .panel { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 18px; display: grid; gap: 12px; }
+  .panel .lbl, .panel .file { display: grid; gap: 6px; font: 500 13px var(--mono); color: var(--soft); }
+  .panel textarea, .panel .q { width: 100%; font: 15px/1.5 var(--body); color: var(--ink); background: var(--paper); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; }
+  .panel textarea { resize: vertical; }
+  .panel button { font: 600 15px var(--body); color: var(--ink); background: var(--paper); border: 1px solid var(--line); border-radius: 8px; padding: 9px 16px; cursor: pointer; justify-self: start; }
+  .panel button.primary, .use, .cta { background: var(--teal); color: var(--paper); border-color: var(--teal); }
+  .panel button:disabled { opacity: .55; cursor: default; }
+  .mode { border: 1px solid var(--line); border-radius: 8px; padding: 8px 12px; display: flex; gap: 18px; flex-wrap: wrap; font-size: 15px; } .mode legend { font: 500 12px var(--mono); color: var(--soft); padding: 0 4px; }
+  .mode input, .panel input[type=radio] { accent-color: var(--teal); }
+  .status { margin: 0; font-size: 14px; color: var(--soft); } .status:empty { display: none; }
+  .results { display: grid; gap: 12px; } .results:empty { display: none; }
+  .out { display: grid; gap: 6px; } .out-head { display: flex; justify-content: space-between; align-items: center; gap: 10px; } .out-head h3 { font-size: 16px; } .out-head span { display: flex; gap: 6px; }
+  .out-head button { padding: 5px 10px; font-size: 13px; }
+  .out pre { margin: 0; white-space: pre-wrap; font: 14px/1.55 var(--mono); background: var(--paper); border: 1px solid var(--line); border-radius: 8px; padding: 12px; max-height: 50vh; overflow: auto; }
+  .findings { display: grid; gap: 8px; } .finding { border: 1px solid var(--line); border-left: 4px solid var(--brass); border-radius: 8px; padding: 10px 12px; font-size: 14.5px; } .finding.auto { border-left-color: var(--teal); }
+  .finding p { margin: 4px 0 0; color: var(--soft); max-width: none; } .finding .fix { color: var(--ink); }
+  .good { border-left: 4px solid var(--teal); padding: 8px 12px; font-size: 14.5px; } .good ul { margin: 6px 0 0; padding-left: 18px; color: var(--soft); }
+  .pair { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; } .pair figure { margin: 0; display: grid; gap: 6px; } .pair img { width: 100%; max-height: 46vh; object-fit: contain; background: var(--paper); border: 1px solid var(--line); border-radius: 8px; }
+  .pair audio { width: 100%; } .pair figcaption { font: 12px var(--mono); color: var(--soft); }
+  .chat { display: grid; gap: 10px; max-height: 58vh; overflow-y: auto; } .chat:empty { display: none; }
+  .chat .you { justify-self: end; background: var(--teal); color: var(--paper); padding: 8px 12px; border-radius: 14px 14px 4px 14px; max-width: 80%; width: auto; border: 0; }
+  .chat .a { border: 1px solid var(--line); border-left: 4px solid var(--teal); border-radius: 4px 14px 14px 14px; padding: 10px 12px; display: grid; gap: 8px; font-size: 15px; }
+  .chat .a.partial, .chat .a.rephrase { border-left-color: var(--brass); } .chat .a.none { border-left-color: var(--soft); }
+  .chat blockquote { margin: 0; padding: 6px 10px; background: var(--paper); border-radius: 8px; } .chat cite { display: block; font: 12px var(--mono); color: var(--soft); font-style: normal; } .chat .why { font: 12px var(--mono); color: var(--soft); margin: 0; }
+  .ask-row { display: grid; grid-template-columns: 1fr auto auto; gap: 8px; }
+  .app-only p { color: var(--soft); margin: 4px 0 0; }
+  .use { display: inline-block; margin-top: 12px; font: 600 14px var(--body); padding: 7px 14px; border-radius: 8px; text-decoration: none; }
+  .cta { display: inline-block; font: 600 15px var(--body); padding: 8px 16px; border-radius: 8px; text-decoration: none; margin-top: 6px; }
+  @media (max-width: 600px) { .pair { grid-template-columns: 1fr; } .ask-row { grid-template-columns: 1fr 1fr; } .ask-row .q { grid-column: 1 / -1; } }
+
+  /* Front page: small index cards; the whole card opens its app (Ken, 2026-10-28). Full details show in the app view. */
+  .mods { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; }
+  .mod { cursor: pointer; padding: 14px 16px; display: grid; grid-template-rows: auto 1fr auto; transition: border-color .15s; }
+  .mod:hover, .mod:focus-within { border-color: var(--teal); }
+  .mod h4 { font-size: 17px; margin: 0 0 6px; }
+  .mod dl dt, .mod dl dd:not(:first-of-type) { display: none; }
+  .mod dl dd:first-of-type { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; font-size: 14px; line-height: 1.5; max-height: 3em; }
+  .mod .use { margin-top: 10px; justify-self: start; }
+  [hidden] { display: none !important; }   /* hidden always wins over a layout rule */
 </style>
 </head>
 <body id="top">
@@ -191,13 +237,14 @@
     <a href="#limits">Limits</a>
   </aside>
   <div class="page">
-  <header class="hero">
+  <header class="hero" id="hero">
     <div class="hero-in">
       <div>
         <p class="label">The Schwarz Diamond Hardener</p>
         <h1>Geometry, not guesswork.</h1>
         <p class="lede">It makes what you already have leaner, safer and more trustworthy, and proves every change it makes.</p>
         <p class="sub">No AI writes or changes anything. It measures, it checks, and every change can be undone.</p>
+        <p class="sub"><a class="cta" href="#m-text">Try it now: start with Text</a> or pick any module on the left.</p>
       </div>
     <figure class="stage" style="margin:0">
       <canvas id="surface" aria-label="A block cut from the Schwarz Diamond surface, turning slowly. Its two sides, shown in teal and brass, are the two interlaced networks the surface keeps apart."></canvas>
@@ -205,38 +252,44 @@
     </figure>
     </div>
   </header>
-  <main>
+  <section id="tool" class="tool" hidden aria-labelledby="tool-title">
+    <a class="back" href="#top">&larr; All modules</a>
+    <h2 id="tool-title"></h2>
+    <div id="tool-about" class="tool-about"></div>
+    <div id="tool-body"></div>
+  </section>
+  <main id="overview">
   <section class="band" id="modules">
     <div class="wrap">
       <div class="head"><p class="label">The modules</p><h2>What it hardens</h2>
-        <p>Thirteen modules on one engine. Each finds one kind of weakness, proves every change with a check, and leaves anything it cannot prove to you. They run in the app on your own computer.</p></div>
+        <p>Thirteen modules on one engine. Each finds one kind of weakness, proves every change with a check, and leaves anything it cannot prove to you. Most run right here in your browser: click any card, or pick one in the sidebar. Your files are read by your browser and never sent anywhere. A few need the app on a computer, and say so.</p></div>
       <h3 class="group">Code</h3>
       <div class="mods">
-        <article class="mod" id="m-source"><h4>Source code</h4><dl><dt>Finds</dt><dd>Imports a file never uses, and top-level code that nothing anywhere in the project calls.</dd><dt>Checked by</dt><dd>The whole project is read to see what uses what; every changed file is parsed again, and the project's own tests run before and after.</dd><dt>Never</dt><dd>Tests, outside libraries, build output, or anything still in use.</dd></dl></article>
-        <article class="mod" id="m-webcode"><h4>Code that never runs</h4><dl><dt>Finds</dt><dd>The app's own functions that a real session in Chrome never touched, measured exactly.</dd><dt>Checked by</dt><dd>Reported only: code that did not run in one session may still run in another mode, on an error, or online.</dd><dt>Never</dt><dd>It removes nothing by itself.</dd></dl></article>
-        <article class="mod" id="m-security"><h4>Security</h4><dl><dt>Finds</dt><dd>Dependencies with published flaws, keys and tokens left in the project's files (masked in the report), scripts loaded from other sites, and dependencies never imported.</dd><dt>Checked by</dt><dd>Standard checks, including the public advisory database.</dd><dt>Never</dt><dd>It changes nothing in the project.</dd></dl></article>
-        <article class="mod" id="m-balance"><h4>Balance</h4><dl><dt>Finds</dt><dd>Where input, transform or output takes over: patterns that can run away on a long input, loops with no way out, data accepted with no size limit, and failures swallowed in silence.</dd><dt>Checked by</dt><dd>Each runaway pattern is proved by timing it on longer and longer input, in a separate thread with a time limit.</dd><dt>Never</dt><dd>It changes nothing; every item is your decision.</dd></dl></article>
+        <article class="mod" id="m-source"><h4>Source code</h4><dl><dt>Finds</dt><dd>Imports a file never uses, and top-level code that nothing anywhere in the project calls.</dd><dt>Checked by</dt><dd>The whole project is read to see what uses what; every changed file is parsed again, and the project's own tests run before and after.</dd><dt>Never</dt><dd>Tests, outside libraries, build output, or anything still in use.</dd></dl><a class="use" href="#m-source">Open</a></article>
+        <article class="mod" id="m-webcode"><h4>Code that never runs</h4><dl><dt>Finds</dt><dd>The app's own functions that a real session in Chrome never touched, measured exactly.</dd><dt>Checked by</dt><dd>Reported only: code that did not run in one session may still run in another mode, on an error, or online.</dd><dt>Never</dt><dd>It removes nothing by itself.</dd></dl><a class="use" href="#m-webcode">Open</a></article>
+        <article class="mod" id="m-security"><h4>Security</h4><dl><dt>Finds</dt><dd>Dependencies with published flaws, keys and tokens left in the project's files (masked in the report), scripts loaded from other sites, and dependencies never imported.</dd><dt>Checked by</dt><dd>Standard checks, including the public advisory database.</dd><dt>Never</dt><dd>It changes nothing in the project.</dd></dl><a class="use" href="#m-security">Open</a></article>
+        <article class="mod" id="m-balance"><h4>Balance</h4><dl><dt>Finds</dt><dd>Where input, transform or output takes over: patterns that can run away on a long input, loops with no way out, data accepted with no size limit, and failures swallowed in silence.</dd><dt>Checked by</dt><dd>Each runaway pattern is proved by timing it on longer and longer input, in a separate thread with a time limit.</dd><dt>Never</dt><dd>It changes nothing; every item is your decision.</dd></dl><a class="use" href="#m-balance">Open</a></article>
       </div>
       <h3 class="group">Media</h3>
       <div class="mods">
-        <article class="mod" id="m-models"><h4>3D models</h4><dl><dt>Finds</dt><dd>Parts of a model that never change what you see, such as textures too faint to show and animation tracks that never move.</dd><dt>Checked by</dt><dd>The model is drawn before and after from several angles and sizes, and animations are played in both; only an unchanged picture counts.</dd><dt>Never</dt><dd>Textures are never shrunk: that changes the picture, so it is your call.</dd></dl></article>
-        <article class="mod" id="m-images"><h4>Pictures</h4><dl><dt>Finds</dt><dd>What rides along in a photo: where it was taken, the camera, the software, the editing history.</dd><dt>Checked by</dt><dd>Both versions are decoded and every pixel compared; orientation and colour profile are kept.</dd><dt>Never</dt><dd>Your original is never changed; you save a cleaned copy.</dd></dl></article>
-        <article class="mod" id="m-sound"><h4>Sound</h4><dl><dt>Finds</dt><dd>Tags and padding inside a sound file.</dd><dt>Checked by</dt><dd>Both versions are decoded and every sample in every channel compared; loop points and cue markers are kept.</dd><dt>Never</dt><dd>Your original is never changed; you save a cleaned copy.</dd></dl></article>
+        <article class="mod" id="m-models"><h4>3D models</h4><dl><dt>Finds</dt><dd>Parts of a model that never change what you see, such as textures too faint to show and animation tracks that never move.</dd><dt>Checked by</dt><dd>The model is drawn before and after from several angles and sizes, and animations are played in both; only an unchanged picture counts.</dd><dt>Never</dt><dd>Textures are never shrunk: that changes the picture, so it is your call.</dd></dl><a class="use" href="#m-models">Open</a></article>
+        <article class="mod" id="m-images"><h4>Pictures</h4><dl><dt>Finds</dt><dd>What rides along in a photo: where it was taken, the camera, the software, the editing history.</dd><dt>Checked by</dt><dd>Both versions are decoded and every pixel compared; orientation and colour profile are kept.</dd><dt>Never</dt><dd>Your original is never changed; you save a cleaned copy.</dd></dl><a class="use" href="#m-images">Open</a></article>
+        <article class="mod" id="m-sound"><h4>Sound</h4><dl><dt>Finds</dt><dd>Tags and padding inside a sound file.</dd><dt>Checked by</dt><dd>Both versions are decoded and every sample in every channel compared; loop points and cue markers are kept.</dd><dt>Never</dt><dd>Your original is never changed; you save a cleaned copy.</dd></dl><a class="use" href="#m-sound">Open</a></article>
       </div>
       <h3 class="group">Words</h3>
       <div class="mods">
-        <article class="mod" id="m-text"><h4>Text</h4><dl><dt>Finds</dt><dd>Stray spaces, doubled words, repeated paragraphs, page clutter, filler, and sound-alike words where the words next to them settle the spelling (its going, their is, your welcome); and a summary made of whole sentences copied word for word.</dd><dt>Checked by</dt><dd>Every number, name, quotation and hedge word is counted before and after, and must match.</dd><dt>Never</dt><dd>Words inside quotation marks are never touched.</dd></dl></article>
-        <article class="mod" id="m-aistyle"><h4>AI detector and humanizer</h4><dl><dt>Finds</dt><dd>A score of the habits common in AI-written text, with every point shown; and a rewrite of the habits a rule can safely change.</dd><dt>Checked by</dt><dd>The same fact count as Text: anything that would change a number, name or quotation is held back.</dd><dt>Never</dt><dd>It is not proof of who wrote anything, and must never be used to accuse anyone.</dd></dl></article>
-        <article class="mod" id="m-bias"><h4>Bias</h4><dl><dt>Finds</dt><dd>How coverage of one event splits into sides, what every side still agrees on, and each side's loaded words.</dd><dt>Checked by</dt><dd>Articles are compared by the facts they share.</dd><dt>Never</dt><dd>It measures agreement, not truth.</dd></dl></article>
-        <article class="mod" id="m-ask"><h4>Ask your documents</h4><dl><dt>Finds</dt><dd>Answers to your questions in your documents' own sentences, each with its file and line; a partial answer names what is missing; sources that disagree are both shown. A follow-up with "he", "they" or "it" is read against the last answer; if that could mean more than one, it asks you to rephrase.</dd><dt>Checked by</dt><dd>A question word found in none of your documents blocks an answer.</dd><dt>Never</dt><dd>It never writes an answer or fills a gap.</dd></dl></article>
+        <article class="mod" id="m-text"><h4>Text</h4><dl><dt>Finds</dt><dd>Stray spaces, doubled words, repeated paragraphs, page clutter, filler, and sound-alike words where the words next to them settle the spelling (its going, their is, your welcome); and a summary made of whole sentences copied word for word.</dd><dt>Checked by</dt><dd>Every number, name, quotation and hedge word is counted before and after, and must match.</dd><dt>Never</dt><dd>Words inside quotation marks are never touched.</dd></dl><a class="use" href="#m-text">Open</a></article>
+        <article class="mod" id="m-aistyle"><h4>AI detector and humanizer</h4><dl><dt>Finds</dt><dd>A score of the habits common in AI-written text, with every point shown; and a rewrite of the habits a rule can safely change.</dd><dt>Checked by</dt><dd>The same fact count as Text: anything that would change a number, name or quotation is held back.</dd><dt>Never</dt><dd>It is not proof of who wrote anything, and must never be used to accuse anyone.</dd></dl><a class="use" href="#m-aistyle">Open</a></article>
+        <article class="mod" id="m-bias"><h4>Bias</h4><dl><dt>Finds</dt><dd>How coverage of one event splits into sides, what every side still agrees on, and each side's loaded words.</dd><dt>Checked by</dt><dd>Articles are compared by the facts they share.</dd><dt>Never</dt><dd>It measures agreement, not truth.</dd></dl><a class="use" href="#m-bias">Open</a></article>
+        <article class="mod" id="m-ask"><h4>Ask your documents</h4><dl><dt>Finds</dt><dd>Answers to your questions in your documents' own sentences, each with its file and line; a partial answer names what is missing; sources that disagree are both shown. A follow-up with "he", "they" or "it" is read against the last answer; if that could mean more than one, it asks you to rephrase.</dd><dt>Checked by</dt><dd>A question word found in none of your documents blocks an answer.</dd><dt>Never</dt><dd>It never writes an answer or fills a gap.</dd></dl><a class="use" href="#m-ask">Open</a></article>
       </div>
       <h3 class="group">Web</h3>
       <div class="mods">
-        <article class="mod" id="m-pages"><h4>Read pages</h4><dl><dt>Finds</dt><dd>The article inside a web page, without the menus, advertising and clutter; its reading level and layout problems (walls of text, overlong sentences); and, across several articles, the same thing given different numbers.</dd><dt>Checked by</dt><dd>The text fixes' fact check; reading level by the standard Flesch-Kincaid formula; contradictions shown with both sentences, neither chosen as right.</dd><dt>Never</dt><dd>It changes nothing on the original page or its server, and publishes nothing: the readable copy opens in a new tab on your own computer, for readability and clarity.</dd></dl></article>
+        <article class="mod" id="m-pages"><h4>Read pages</h4><dl><dt>Finds</dt><dd>The article inside a web page, without the menus, advertising and clutter; its reading level and layout problems (walls of text, overlong sentences); and, across several articles, the same thing given different numbers.</dd><dt>Checked by</dt><dd>The text fixes' fact check; reading level by the standard Flesch-Kincaid formula; contradictions shown with both sentences, neither chosen as right.</dd><dt>Never</dt><dd>It changes nothing on the original page or its server, and publishes nothing: the readable copy opens in a new tab on your own computer, for readability and clarity.</dd></dl><a class="use" href="#m-pages">Open</a></article>
       </div>
       <h3 class="group">Money</h3>
       <div class="mods">
-        <article class="mod" id="m-budget"><h4>Budget</h4><dl><dt>Finds</dt><dd>Repeated charges and fees in a bank statement.</dd><dt>Checked by</dt><dd>Read on your computer only; the statement never leaves it.</dd><dt>Never</dt><dd>It is not financial advice; you decide.</dd></dl></article>
+        <article class="mod" id="m-budget"><h4>Budget</h4><dl><dt>Finds</dt><dd>Repeated charges and fees in a bank statement.</dd><dt>Checked by</dt><dd>Read on your computer only; the statement never leaves it.</dd><dt>Never</dt><dd>It is not financial advice; you decide.</dd></dl><a class="use" href="#m-budget">Open</a></article>
       </div>
     </div>
   </section>
@@ -397,7 +450,7 @@
     const a = byId.get(id); if (a && side.scrollWidth > side.clientWidth) side.scrollTo({ left: a.offsetLeft - 16, behavior: 'smooth' });
   };
   const sections = [...byId.keys()].map(id => document.getElementById(id)).filter(Boolean);
-  const pick = () => { let cur = sections[0]; for (const s of sections) if (s.getBoundingClientRect().top < innerHeight / 3) cur = s; mark(cur.id); };
+  const pick = () => { if (document.body.dataset.view === 'tool') return; let cur = sections[0]; for (const s of sections) if (s.getBoundingClientRect().top < innerHeight / 3) cur = s; mark(cur.id); };
   const btn = document.getElementById('menu-btn');
   const open = yes => { side.classList.toggle('open', yes); btn.setAttribute('aria-expanded', String(yes)); };
   btn.addEventListener('click', () => open(!side.classList.contains('open')));
@@ -406,5 +459,6 @@
   addEventListener('scroll', pick, { passive: true }); addEventListener('resize', pick); pick();
 })();
 </script>
+<script type="module" src="tools/tools.js"></script>
 </body>
 </html>

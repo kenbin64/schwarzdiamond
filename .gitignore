@@ -2,3 +2,6 @@
 source-art/
 node_modules/
 .wrangler/
+# The packed tool code is built from the private hardener repo (web/build.mjs) and deployed with the site,
+# but not kept in this public repository.
+site/tools/hardener.js
