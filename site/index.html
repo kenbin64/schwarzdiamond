@@ -134,7 +134,16 @@
   .mod dd { margin: 0; font-size: 15px; color: var(--soft); }
   footer { padding-block: 40px 56px; }
 
+  /* The modules stay in the left sidebar on every screen wider than a phone (Ken, 2026-10-28): a narrower column on
+     small windows; only below 600 pixels does it become the menu button. */
   @media (max-width: 860px) {
+    .shell { grid-template-columns: 172px minmax(0, 1fr); column-gap: 24px; }
+    .side a { font-size: 13.5px; padding: 5px 10px; }
+    .hero-in { grid-template-columns: 1fr; padding: 24px; }
+    .hero .stage { max-width: 300px; }
+    .topbar .links { display: none; }
+  }
+  @media (max-width: 600px) {
     .shell { grid-template-columns: 1fr; }
     .side { display: none; position: fixed; top: 50px; left: 0; right: 0; z-index: 6; max-height: calc(100vh - 50px); overflow-y: auto; background: var(--paper); padding: 8px 20px 20px; border-bottom: 1px solid var(--line); box-shadow: 0 12px 24px rgba(0,0,0,.25); }
     .side.open { display: grid; }
@@ -160,6 +169,7 @@
     <a href="#m-source">Source code</a>
     <a href="#m-webcode">Code that never runs</a>
     <a href="#m-security">Security</a>
+    <a href="#m-balance">Balance</a>
     <p class="side-label">Media</p>
     <a href="#m-models">3D models</a>
     <a href="#m-images">Pictures</a>
@@ -197,12 +207,13 @@
   <section class="band" id="modules">
     <div class="wrap">
       <div class="head"><p class="label">The modules</p><h2>What it hardens</h2>
-        <p>Eleven modules on one engine. Each finds one kind of weakness, proves every change with a check, and leaves anything it cannot prove to you. They run in the app on your own computer.</p></div>
+        <p>Twelve modules on one engine. Each finds one kind of weakness, proves every change with a check, and leaves anything it cannot prove to you. They run in the app on your own computer.</p></div>
       <h3 class="group">Code</h3>
       <div class="mods">
         <article class="mod" id="m-source"><h4>Source code</h4><dl><dt>Finds</dt><dd>Imports a file never uses, and top-level code that nothing anywhere in the project calls.</dd><dt>Checked by</dt><dd>The whole project is read to see what uses what; every changed file is parsed again, and the project's own tests run before and after.</dd><dt>Never</dt><dd>Tests, outside libraries, build output, or anything still in use.</dd></dl></article>
         <article class="mod" id="m-webcode"><h4>Code that never runs</h4><dl><dt>Finds</dt><dd>The app's own functions that a real session in Chrome never touched, measured exactly.</dd><dt>Checked by</dt><dd>Reported only: code that did not run in one session may still run in another mode, on an error, or online.</dd><dt>Never</dt><dd>It removes nothing by itself.</dd></dl></article>
         <article class="mod" id="m-security"><h4>Security</h4><dl><dt>Finds</dt><dd>Dependencies with published flaws, keys and tokens left in the project's files (masked in the report), scripts loaded from other sites, and dependencies never imported.</dd><dt>Checked by</dt><dd>Standard checks, including the public advisory database.</dd><dt>Never</dt><dd>It changes nothing in the project.</dd></dl></article>
+        <article class="mod" id="m-balance"><h4>Balance</h4><dl><dt>Finds</dt><dd>Where input, transform or output takes over: patterns that can run away on a long input, loops with no way out, data accepted with no size limit, and failures swallowed in silence.</dd><dt>Checked by</dt><dd>Each runaway pattern is proved by timing it on longer and longer input, in a separate thread with a time limit.</dd><dt>Never</dt><dd>It changes nothing; every item is your decision.</dd></dl></article>
       </div>
       <h3 class="group">Media</h3>
       <div class="mods">
@@ -212,10 +223,10 @@
       </div>
       <h3 class="group">Words</h3>
       <div class="mods">
-        <article class="mod" id="m-text"><h4>Text</h4><dl><dt>Finds</dt><dd>Stray spaces, doubled words, repeated paragraphs, page clutter and filler; and a summary made of whole sentences copied word for word.</dd><dt>Checked by</dt><dd>Every number, name, quotation and hedge word is counted before and after, and must match.</dd><dt>Never</dt><dd>Words inside quotation marks are never touched.</dd></dl></article>
+        <article class="mod" id="m-text"><h4>Text</h4><dl><dt>Finds</dt><dd>Stray spaces, doubled words, repeated paragraphs, page clutter, filler, and sound-alike words where the words next to them settle the spelling (its going, their is, your welcome); and a summary made of whole sentences copied word for word.</dd><dt>Checked by</dt><dd>Every number, name, quotation and hedge word is counted before and after, and must match.</dd><dt>Never</dt><dd>Words inside quotation marks are never touched.</dd></dl></article>
         <article class="mod" id="m-aistyle"><h4>AI detector and humanizer</h4><dl><dt>Finds</dt><dd>A score of the habits common in AI-written text, with every point shown; and a rewrite of the habits a rule can safely change.</dd><dt>Checked by</dt><dd>The same fact count as Text: anything that would change a number, name or quotation is held back.</dd><dt>Never</dt><dd>It is not proof of who wrote anything, and must never be used to accuse anyone.</dd></dl></article>
         <article class="mod" id="m-bias"><h4>Bias</h4><dl><dt>Finds</dt><dd>How coverage of one event splits into sides, what every side still agrees on, and each side's loaded words.</dd><dt>Checked by</dt><dd>Articles are compared by the facts they share.</dd><dt>Never</dt><dd>It measures agreement, not truth.</dd></dl></article>
-        <article class="mod" id="m-ask"><h4>Ask your documents</h4><dl><dt>Finds</dt><dd>Answers to your questions in your documents' own sentences, each with its file and line; a partial answer names what is missing; sources that disagree are both shown.</dd><dt>Checked by</dt><dd>A question word found in none of your documents blocks an answer.</dd><dt>Never</dt><dd>It never writes an answer or fills a gap.</dd></dl></article>
+        <article class="mod" id="m-ask"><h4>Ask your documents</h4><dl><dt>Finds</dt><dd>Answers to your questions in your documents' own sentences, each with its file and line; a partial answer names what is missing; sources that disagree are both shown. A follow-up with "he", "they" or "it" is read against the last answer; if that could mean more than one, it asks you to rephrase.</dd><dt>Checked by</dt><dd>A question word found in none of your documents blocks an answer.</dd><dt>Never</dt><dd>It never writes an answer or fills a gap.</dd></dl></article>
       </div>
       <h3 class="group">Money</h3>
       <div class="mods">
