@@ -13,6 +13,8 @@ const view = $('tool'), body = $('tool-body');
 // A file picked for a text tool must be text. A picture or sound read as text is mostly zero bytes and broken
 // characters: said plainly, rather than "held back" or "nothing found" (found 2026-10-28 by picking a JPEG).
 const isBinary = t => t.includes('\u0000') || (t.match(/\uFFFD/g) || []).length > Math.max(3, t.length / 100);
+// The documents chosen: the files picked, or the text files inside the folder picked (other files are skipped).
+const docsFrom = el => { const picked = [...(el.querySelector('.picks')?.files || [])], inFolder = [...(el.querySelector('.folder')?.files || [])].filter(f => /\.(txt|md|markdown|text)$/i.test(f.name)); return picked.length ? picked : inFolder; };
 const readText = async f => { const t = await f.text(); if (isBinary(t)) throw new Error(`"${f.name}" is not a text file. Choose a .txt, .md, .csv or code file.`); return t; };
 const readBytes = async f => H.Buffer.from(new Uint8Array(await f.arrayBuffer()));
 function download(name, data, type = 'text/plain') {
@@ -52,6 +54,22 @@ function wire(el, run) {
   };
 }
 // Every tool is input -> transform -> output. The transform runs in the browser; the visitor need not know how.
+// Every file or folder input is a clear button that opens the dialog (Ken, 2026-10-28), with what was chosen shown
+// beside it. The real input stays, hidden; the button only opens it.
+function dialogButtons(el) {
+  for (const input of el.querySelectorAll('input[type=file]')) {
+    const folder = input.hasAttribute('webkitdirectory'), many = input.multiple;
+    const btn = document.createElement('button'); btn.type = 'button'; btn.className = 'pickbtn';
+    btn.textContent = folder ? 'Choose a folder…' : many ? 'Choose files…' : 'Choose a file…';
+    const shown = document.createElement('span'); shown.className = 'picked'; shown.textContent = 'nothing chosen yet';
+    input.hidden = true; input.after(btn, shown);
+    btn.onclick = () => input.click();
+    input.addEventListener('change', () => {
+      const n = input.files.length;
+      shown.textContent = !n ? 'nothing chosen yet' : n === 1 ? input.files[0].name : folder ? `${n} files in "${(input.files[0].webkitRelativePath || '').split('/')[0]}"` : `${n} files: ${[...input.files].slice(0, 3).map(f => f.name).join(', ')}${n > 3 ? '…' : ''}`;
+    });
+  }
+}
 const panel = html => {
   const el = document.createElement('div'); el.className = 'panel';
   const [input, button] = html.split(/(?=<button class="run)/);
@@ -59,6 +77,7 @@ const panel = html => {
     <div class="step"><span class="n">2</span> Transform <small>runs here in your browser; nothing is sent anywhere</small></div>${button || ''}
     <p class="status" role="status"></p>
     <div class="step out-step" hidden><span class="n">3</span> Output</div><div class="results"></div>`;
+  dialogButtons(el);
   return el;
 };
 const textInput = (label, accept, rows = 9) => `<label class="lbl">${label}<textarea class="src" rows="${rows}" placeholder="Paste here, or choose a file below."></textarea></label>
@@ -95,9 +114,10 @@ const TOOLS = {
   aistyle: () => TOOLS.text('ai'),
   bias: () => {
     const el = panel(`<label class="lbl">Three or more articles about the same event, with a line of --- between them<textarea class="src" rows="10" placeholder="First article&#10;---&#10;Second article&#10;---&#10;Third article"></textarea></label>
-      <label class="file">Or choose three or more files <input type="file" class="picks" multiple accept=".txt,.md,text/plain"></label><button class="run primary" type="button">Run</button>`);
+      <label class="file">Or choose three or more files <input type="file" class="picks" multiple accept=".txt,.md,text/plain"></label>
+      <label class="file">Or a folder holding the articles <input type="file" class="folder" webkitdirectory></label><button class="run primary" type="button">Run</button>`);
     wire(el, async res => {
-      const files = [...el.querySelector('.picks').files], typed = el.querySelector('.src').value;
+      const files = docsFrom(el), typed = el.querySelector('.src').value;
       const articles = typed.trim() ? H.articlesFrom(null, typed) : await Promise.all(files.map(async f => ({ name: f.name, text: await readText(f) })));
       if (articles.length < 3) throw new Error('give three or more articles.');
       const r = H.scanArticles(articles);
@@ -108,7 +128,8 @@ const TOOLS = {
     return el;
   },
   ask: () => {
-    const el = panel(`<label class="file">Choose the documents to answer from (.txt or .md; they stay in your browser) <input type="file" class="picks" multiple accept=".txt,.md,.markdown,text/plain"></label>
+    const el = panel(`<label class="file">Your documents to answer from (.txt or .md; they stay in your browser) <input type="file" class="picks" multiple accept=".txt,.md,.markdown,text/plain"></label>
+      <label class="file">Or a whole folder of them <input type="file" class="folder" webkitdirectory></label>
       <div class="chat" aria-live="polite"></div>
       <div class="ask-row"><input class="q" placeholder="Ask a question about your documents"><button class="run primary" type="button">Ask</button><button class="new" type="button">New conversation</button></div>`);
     let ix = null, key = '', prevQ = '', prevA = [];
@@ -117,7 +138,7 @@ const TOOLS = {
     el.querySelector('.new').onclick = () => { chat.innerHTML = ''; prevQ = ''; prevA = []; };
     q.addEventListener('keydown', e => { if (e.key === 'Enter') el.querySelector('.run').click(); });
     wire(el, async () => {
-      const files = [...el.querySelector('.picks').files], question = q.value.trim();
+      const files = docsFrom(el), question = q.value.trim();
       if (!files.length) throw new Error('choose your documents first.');
       if (!question) throw new Error('type a question.');
       const k = files.map(f => f.name + f.size + f.lastModified).join('|');

@@ -217,6 +217,11 @@
   /* The modules start on the first screen of a laptop (1366 x 768): tighter space between the hero and the first cards. */
   #modules { padding-top: 22px; } #modules .head { margin-bottom: 14px; gap: 6px; } #modules h3.group:first-of-type { margin-top: 10px; }
   .hero-in { padding-block: 18px; }
+  /* File and folder dialog buttons. */
+  .pickbtn { font: 600 14px var(--body) !important; color: var(--ink) !important; background: var(--paper) !important; border: 1px solid var(--teal) !important; border-radius: 8px; padding: 8px 14px !important; cursor: pointer; justify-self: start; }
+  .pickbtn:hover { background: var(--teal) !important; color: var(--paper) !important; }
+  .picked { font: 13px var(--mono); color: var(--soft); }
+  .panel .file { grid-template-columns: 1fr; } .panel .file .pickbtn { margin-top: 2px; }
 </style>
 </head>
 <body id="top">
