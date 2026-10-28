@@ -1,7 +1,9 @@
 // The working tools on schwarzdiamond.com. Each module in the sidebar opens its tool here. They run the same
 // module code as the Schwarz Diamond Hardener app (hardener.js, built from it), in the visitor's own browser:
 // files are read from the visitor's computer by the browser and never sent anywhere.
-import * as H from './hardener.js';
+// Least material: the tool code (the modules) loads only when a tool is first used, not with the front page.
+let H = null;
+const load = async () => (H ??= await import('./hardener.js'));
 
 const $ = id => document.getElementById(id);
 const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
@@ -15,9 +17,14 @@ function download(name, data, type = 'text/plain') {
   const a = Object.assign(document.createElement('a'), { href: url, download: name }); document.body.append(a); a.click(); a.remove();
   setTimeout(() => URL.revokeObjectURL(url), 5000);
 }
-function out(title, text, file) {
+// Where a text result can go next: the output of one step becomes the input of the next (z becomes the next x).
+const NEXT = { text: 'Text', aistyle: 'AI detector', balance: 'Balance' };
+let carried = null;                     // text carried from one tool's output into the next tool's input
+function out(title, text, file, next = []) {
   const box = document.createElement('div'); box.className = 'out';
-  box.innerHTML = `<div class="out-head"><h3>${esc(title)}</h3><span><button type="button" data-act="copy">Copy</button>${file ? '<button type="button" data-act="save">Download</button>' : ''}</span></div><pre></pre>`;
+  box.innerHTML = `<div class="out-head"><h3>${esc(title)}</h3><span><button type="button" data-act="copy">Copy</button>${file ? '<button type="button" data-act="save">Download</button>' : ''}</span></div><pre></pre>` +
+    (next.length ? `<p class="next">Use as input for: ${next.map(k => `<button type="button" data-next="${k}">${NEXT[k]}</button>`).join(' ')}</p>` : '');
+  box.querySelectorAll('[data-next]').forEach(b => b.onclick = () => { carried = { text, from: title }; location.hash = '#m-' + b.dataset.next; });
   box.querySelector('pre').textContent = text;
   box.querySelector('[data-act=copy]').onclick = async e => { try { await navigator.clipboard.writeText(text); e.target.textContent = 'Copied'; } catch { e.target.textContent = 'Select and copy'; } setTimeout(() => { e.target.textContent = 'Copy'; }, 1800); };
   if (file) box.querySelector('[data-act=save]').onclick = () => download(file, text);
@@ -37,11 +44,20 @@ function wire(el, run) {
   const btn = el.querySelector('.run'), res = el.querySelector('.results');
   btn.onclick = async () => {
     btn.disabled = true; res.innerHTML = ''; status(el, 'Working, in your browser…');
-    try { await run(res); } catch (e) { status(el, 'Could not finish: ' + e.message); }
-    finally { btn.disabled = false; }
+    try { await load(); await run(res); } catch (e) { status(el, 'Could not finish: ' + e.message); }
+    finally { btn.disabled = false; const o = el.querySelector('.out-step'); if (o) o.hidden = !res.children.length && !el.querySelector('.chat')?.children.length; }
   };
 }
-const panel = html => { const el = document.createElement('div'); el.className = 'panel'; el.innerHTML = html + '<p class="status" role="status"></p><div class="results"></div>'; return el; };
+// Every tool is input -> transform -> output. The transform runs in the browser; the visitor need not know how.
+const panel = html => {
+  const el = document.createElement('div'); el.className = 'panel';
+  const [input, button] = html.split(/(?=<button class="run)/);
+  el.innerHTML = `<div class="step"><span class="n">1</span> Input</div>${input}
+    <div class="step"><span class="n">2</span> Transform <small>runs here in your browser; nothing is sent anywhere</small></div>${button || ''}
+    <p class="status" role="status"></p>
+    <div class="step out-step" hidden><span class="n">3</span> Output</div><div class="results"></div>`;
+  return el;
+};
 const textInput = (label, accept, rows = 9) => `<label class="lbl">${label}<textarea class="src" rows="${rows}" placeholder="Paste here, or choose a file below."></textarea></label>
   <label class="file">Or choose a file from your computer <input type="file" class="pick" accept="${accept}"></label>`;
 async function sourceText(el) {
@@ -64,11 +80,11 @@ const TOOLS = {
         const r = H.scanAi(text, name), a = r.ai;
         status(el, `AI-style score ${a.before.score} of 100 (${a.before.band}); after humanizing ${a.after.score}. A likelihood from style, not proof: never use it to accuse anyone.`);
         res.append(out('The score, habit by habit', a.before.signals.map(s => `${s.name.padEnd(16)} +${String(s.points).padStart(2)} of ${s.max}   ${s.measured}`).join('\n')),
-          out('Humanized text', a.held.length ? `Held back: a number, name or quotation would have changed, so here is your text unchanged.\n\n${a.humanized}` : a.humanized, 'humanized.txt'), findings(r));
+          out('Humanized text', a.held.length ? `Held back: a number, name or quotation would have changed, so here is your text unchanged.\n\n${a.humanized}` : a.humanized, 'humanized.txt', ['text']), findings(r));
       } else {
         const r = H.scanText(text);
         status(el, r.held?.length ? 'Held back: the fact check found a change it could not explain, so your text is unchanged.' : `${r.changes.length} fix(es) by rule; every number, name, quotation and hedge word came through.`);
-        res.append(out('Your text, fixed', r.fixedText ?? text, 'fixed.txt'), out('Summary (whole sentences, word for word)', r.summaryText || 'Too short to need a summary (under 6 sentences).', 'summary.txt'), findings(r));
+        res.append(out('Your text, fixed', r.fixedText ?? text, 'fixed.txt', ['aistyle']), out('Summary (whole sentences, word for word)', r.summaryText || 'Too short to need a summary (under 6 sentences).', 'summary.txt', ['aistyle', 'text']), findings(r));
       }
     });
     return el;
@@ -208,7 +224,12 @@ function route() {
   $('tool-title').textContent = card.querySelector('h4').textContent;
   $('tool-about').innerHTML = card.querySelector('dl').outerHTML;
   body.innerHTML = '';
-  if (TOOLS[k]) body.append(TOOLS[k]());
+  if (TOOLS[k]) {
+    const el = TOOLS[k](); body.append(el);
+    const src = el.querySelector('.src');
+    if (carried && src) { src.value = carried.text; status(el, `Input carried over from the last step ("${carried.from}"). Press the button to transform it.`); }
+    carried = null;
+  }
   else body.innerHTML = `<div class="panel app-only"><b>This one runs in the app on your own computer.</b><p>${esc(APP_ONLY[k] || '')}</p></div>`;
   window.scrollTo({ top: 0 });
 }
